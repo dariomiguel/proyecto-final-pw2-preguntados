@@ -8,10 +8,10 @@ class Configurator {
         $this->config = parse_ini_file("config/config.ini");
     }
 
-    public function getVikingoController()
-    {
-        return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
-    }
+//    public function getVikingoController()
+//    {
+//        return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
+//    }
 
     private function getDatabase()
     {
@@ -22,29 +22,29 @@ class Configurator {
             $this->config['database']
         );
     }
+//
+//    private function getRenderer()
+//    {
+//        return new MustacheRenderer(__DIR__ . '/../view');
+//    }
 
-    private function getRenderer()
-    {
-        return new MustacheRenderer(__DIR__ . '/../view');
-    }
-
-    private function getVikingoModel()
-    {
-        return new VikingoModel($this->getDatabase());
-    }
+//    private function getVikingoModel()
+//    {
+//        return new VikingoModel($this->getDatabase());
+//    }
 
     public function getRouter()
     {
         return new Router($this, 'vikingo', 'ver');
     }
 
-    public function getOrDefault($controllerName, $defaultControllerName)
-    {
-        $getter = 'get' . ucfirst($controllerName) . 'Controller';
-        if (method_exists($this, $getter)) {
-            return $this->{$getter}();
-        }
-        $defaultGetter = 'get' . ucfirst($defaultControllerName) . 'Controller';
-        return $this->{$defaultGetter}();
-    }
+//    public function getOrDefault($controllerName, $defaultControllerName)
+//    {
+//        $getter = 'get' . ucfirst($controllerName) . 'Controller';
+//        if (method_exists($this, $getter)) {
+//            return $this->{$getter}();
+//        }
+//        $defaultGetter = 'get' . ucfirst($defaultControllerName) . 'Controller';
+//        return $this->{$defaultGetter}();
+//    }
 }
