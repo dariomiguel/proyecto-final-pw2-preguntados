@@ -1,6 +1,6 @@
 <?php
 
-class VikingoController
+class LoginController
 {
     private $model;
     private $renderer;
@@ -13,15 +13,15 @@ class VikingoController
         $this->request  = $request;
     }
 
-//    public function ver()
-//    {
-//        Log::info("VikingoController::ver");
-//        $this->renderer->render("verVikingoView", ['guerreros' => $this->model->getVikingos()]);
-//    }
+    public function ver()
+    {
+        Log::info("LoginController::ver");
+        $this->renderer->render("loginView");
+    }
 //
 //    public function alta()
 //    {
-//        Log::info("VikingoController::alta (form)");
+//        Log::info("LobbyController::alta (form)");
 //        $this->renderer->render("formAltaVikingoView");
 //    }
 //
@@ -33,12 +33,12 @@ class VikingoController
 //        $fuerza = $this->request->post('fuerza');
 //
 //        if (!is_numeric($fuerza)) {
-//            Log::warning("VikingoController::procesarAlta - fuerza invalida: $fuerza");
+//            Log::warning("LobbyController::procesarAlta - fuerza invalida: $fuerza");
 //            Redirect::toIndex();
 //            return;
 //        }
 //
-//        Log::info("VikingoController::procesarAlta - nombre=$nombre");
+//        Log::info("LobbyController::procesarAlta - nombre=$nombre");
 //        $this->model->alta($nombre, $apodo, $clan, (int) $fuerza);
 //        Redirect::toIndex();
 //    }
@@ -48,13 +48,13 @@ class VikingoController
 //        $id = $this->request->get('id');
 //
 //        if (!is_numeric($id)) {
-//            Log::warning("VikingoController::editar - id invalido: $id");
+//            Log::warning("LobbyController::editar - id invalido: $id");
 //            Redirect::toIndex();
 //            return;
 //        }
 //
 //        $id = (int) $id;
-//        Log::info("VikingoController::editar - id=$id");
+//        Log::info("LobbyController::editar - id=$id");
 //        $this->renderer->render("formEditarVikingoView", $this->model->getVikingo($id));
 //    }
 //
@@ -64,7 +64,7 @@ class VikingoController
 //        $fuerza = $this->request->post('fuerza');
 //
 //        if (!is_numeric($id) || !is_numeric($fuerza)) {
-//            Log::warning("VikingoController::procesarEditar - parametros invalidos id=$id fuerza=$fuerza");
+//            Log::warning("LobbyController::procesarEditar - parametros invalidos id=$id fuerza=$fuerza");
 //            Redirect::toIndex();
 //            return;
 //        }
@@ -72,7 +72,7 @@ class VikingoController
 //        $id     = (int) $id;
 //        $fuerza = (int) $fuerza;
 //        $nombre = $this->request->post('nombre');
-//        Log::info("VikingoController::procesarEditar - id=$id nombre=$nombre");
+//        Log::info("LobbyController::procesarEditar - id=$id nombre=$nombre");
 //        $this->model->editar($id, $nombre, $this->request->post('apodo'), $this->request->post('clan'), $fuerza);
 //        Redirect::toIndex();
 //    }
@@ -82,13 +82,13 @@ class VikingoController
 //        $id = $this->request->get('id');
 //
 //        if (!is_numeric($id)) {
-//            Log::warning("VikingoController::eliminar - id invalido: $id");
+//            Log::warning("LobbyController::eliminar - id invalido: $id");
 //            Redirect::toIndex();
 //            return;
 //        }
 //
 //        $id = (int) $id;
-//        Log::info("VikingoController::eliminar - id=$id");
+//        Log::info("LobbyController::eliminar - id=$id");
 //        $this->model->eliminar($id);
 //        Redirect::toIndex();
 //    }

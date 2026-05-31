@@ -1,14 +1,14 @@
 <?php
-//
-//class VikingoModel
-//{
-//    private $database;
-//
-//    public function __construct($database)
-//    {
-//        $this->database = $database;
-//    }
-//
+
+class LoginModel
+{
+    private $database;
+
+    public function __construct($database)
+    {
+        $this->database = $database;
+    }
+
 //    public function getVikingos()
 //    {
 //        $sql = "SELECT * FROM guerreros";
@@ -44,4 +44,4 @@
 //        Log::info("SQL: $sql [$id]");
 //        $this->database->execute($sql, [$id]);
 //    }
-//}
+}
