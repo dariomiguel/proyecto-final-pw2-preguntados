@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../vendor/mustache/src/Mustache/Autoloader.php');
+require_once(__DIR__ . '/../vendor/mustache/mustache.php-2.14.2/src/Mustache/Autoloader.php');
 
 class MustacheRenderer {
     private $mustache;

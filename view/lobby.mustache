@@ -1,0 +1,29 @@
+{{>header}}
+<main>
+
+    <header>
+        <h1>¡Bienvenido al Lobby, {{nombre_usuario}}!</h1>
+        <h2>Puntaje Total Acumulado: <strong>{{puntaje_total}}</strong> pts</h2>
+    </header>
+
+    <section class="botonera">
+        <a href="/partida/nueva" class="btn btn-nueva">Crear Nueva Partida</a>
+        <a href="/ranking" class="btn btn-ranking">Ver Ranking Global</a>
+    </section>
+
+    <section class="historial">
+        <h3>Tus últimas partidas</h3>
+        <ul>
+            {{#partidas}}
+                <li>Partida #{{id}} - Resultado: <strong>{{resultado}} puntos</strong></li>
+            {{/partidas}}
+
+            {{^partidas}}
+                <li>Aún no has jugado ninguna partida. ¡Animate a crear una!</li>
+            {{/partidas}}
+        </ul>
+    </section>
+
+</main>
+
+{{>footer}}
