@@ -1,20 +1,18 @@
 <?php
+
 class Configurator {
 
     private $config;
 
-    public function __construct()
-    {
+    public function __construct(){
         $this->config = parse_ini_file("config/config.ini");
     }
 
-//    public function getVikingoController()
-//    {
-//        return new VikingoController($this->getVikingoModel(), $this->getRenderer(), new Request());
-//    }
+    public function getRouter(){
+        return new Router($this,'lobby', 'ver');
+    }
 
-    private function getDatabase()
-    {
+    private function getDatabase(){
         return new MyDatabase(
             $this->config['hostname'],
             $this->config['username'],
@@ -22,29 +20,18 @@ class Configurator {
             $this->config['database']
         );
     }
-//
-//    private function getRenderer()
-//    {
-//        return new MustacheRenderer(__DIR__ . '/../view');
-//    }
 
-//    private function getVikingoModel()
-//    {
-//        return new VikingoModel($this->getDatabase());
-//    }
-
-    public function getRouter()
-    {
-        return new Router($this, 'vikingo', 'ver');
+    public function getLobbyController(){
+     return new LobbyController($this->getRendeder());
     }
 
-//    public function getOrDefault($controllerName, $defaultControllerName)
-//    {
-//        $getter = 'get' . ucfirst($controllerName) . 'Controller';
-//        if (method_exists($this, $getter)) {
-//            return $this->{$getter}();
-//        }
-//        $defaultGetter = 'get' . ucfirst($defaultControllerName) . 'Controller';
-//        return $this->{$defaultGetter}();
-//    }
+    private function getRendeder(){
+        return new MustacheRenderer("view");
+    }
+
+    public function getOrDefault($controllerName,$default){
+        $getter ='get' . ucfirst($controllerName) . 'Controller';
+        return method_exists($this, $getter) ? $this->{$getter}() : $default;
+
+    }
 }
