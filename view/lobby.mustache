@@ -1,0 +1,78 @@
+{{>header}}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-8">
+
+            <!-- Bienvenida -->
+            <div class="text-center mb-4">
+                <h1 class="display-5 fw-bold">
+                    ¡Bienvenido al Lobby, {{nombre_usuario}}!
+                </h1>
+
+                <p class="lead">
+                    Puntaje Total Acumulado:
+                    <span class="fw-bold text-primary">
+                        {{puntaje_total}} pts
+                    </span>
+                </p>
+            </div>
+
+            <!-- Acciones -->
+            <div class="card shadow-lg border-0 mb-4">
+                <div class="card-body p-4">
+
+                    <h3 class="h5 mb-4 text-center">
+                        ¿Qué querés hacer?
+                    </h3>
+
+                    <div class="d-grid gap-3">
+                        <a href="/partida"
+                           class="btn btn-primary btn-lg">
+                            Crear Nueva Partida
+                        </a>
+
+                        <a href="/ranking"
+                           class="btn btn-secondary btn-lg">
+                            Ver Ranking Global
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Historial -->
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-4">
+
+                    <h3 class="h4 mb-4">
+                        Tus últimas partidas
+                    </h3>
+
+                    {{#partidas}}
+                        <div class="list-group">
+                            {{#partidas}}
+                                <div class="list-group-item">
+                                    Partida #{{id}} -
+                                    Resultado:
+                                    <strong>{{resultado}} puntos</strong>
+                                </div>
+                            {{/partidas}}
+                        </div>
+                    {{/partidas}}
+
+                    {{^partidas}}
+                        <div class="alert alert-info mb-0">
+                            Aún no has jugado ninguna partida.
+                            ¡Animate a crear una!
+                        </div>
+                    {{/partidas}}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{>footer}}

@@ -1,11 +1,17 @@
 <?php
-class Configurator {
+class Configurator
+{
 
     private $config;
 
     public function __construct()
     {
         $this->config = parse_ini_file("config/config.ini");
+    }
+
+    public function getLobbyController()
+    {
+        return new LobbyController($this->getRenderer());
     }
 
     public function getLoginController()
@@ -28,6 +34,11 @@ class Configurator {
         return new MustacheRenderer(__DIR__ . '/../view');
     }
 
+//Dejo comentada esta parte que dejo bruno por si tira algún error si no tienen errores se puede borrar
+//    private function getRendeder(){
+//        return new MustacheRenderer("view");
+//    }
+
     private function getLoginModel()
     {
         return new LoginModel($this->getDatabase());
@@ -35,7 +46,7 @@ class Configurator {
 
     public function getRouter()
     {
-        return new Router($this, 'login', 'ver');
+        return new Router($this, 'lobby', 'ver');
     }
 
     public function getOrDefault($controllerName, $defaultControllerName)
@@ -50,4 +61,11 @@ class Configurator {
         return $this->{$defaultGetter}();
     }
 
+//Dejo comentada esta parte que dejo bruno por si tira algun error si no tienen errores se puede borrar
+//    public function getOrDefault($controllerName,$default)
+//    {
+//        $getter ='get' . ucfirst($controllerName) . 'Controller';
+//        return method_exists($this, $getter) ? $this->{$getter}() : $default;
+//
+//    }
 }
