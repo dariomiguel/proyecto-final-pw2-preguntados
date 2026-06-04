@@ -10,6 +10,7 @@ CREATE TABLE usuarios (
                           sexo ENUM('Masculino', 'Femenino', 'Prefiero no cargarlo') NOT NULL,
                           pais VARCHAR(50) NOT NULL,
                           ciudad VARCHAR(50) NOT NULL,
+                          puntaje_total INT DEFAULT 0 NOT NULL,
 
                           mail VARCHAR(100) UNIQUE NOT NULL,
                           contrasenia VARCHAR(255) NOT NULL,

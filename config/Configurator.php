@@ -14,6 +14,10 @@ class Configurator
         return new LobbyController($this->getRenderer());
     }
 
+    public function getPerfilController(){
+        return new PerfilController($this->getUsuarioModel(),$this->getRenderer(),new Request());
+    }
+
     public function getLoginController()
     {
         return new LoginController($this->getLoginModel(), $this->getRenderer(), new Request());
@@ -68,4 +72,7 @@ class Configurator
 //        return method_exists($this, $getter) ? $this->{$getter}() : $default;
 //
 //    }
+    private function getUsuarioModel(){
+        return new UsuarioModel($this->getDatabase());
+    }
 }

@@ -1,0 +1,47 @@
+{{>header}}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <img src="/public/fotos/{{foto_perfil}}"
+                         alt="Foto de {{nombre_usuario}}"
+                         class="rounded-circle img-thumbnail mb-3"
+                         style="width: 150px; height: 150px; object-fit: cover;">
+
+                    <h2 class="card-title">{{nombre}} {{apellido}}</h2>
+                    <p class="text-muted">@{{nombre_usuario}}</p>
+
+                    <div class="row mt-4">
+                        <div class="col-6 border-end">
+                            <h4 class="mb-0">{{puntaje_total}}</h4>
+                            <small class="text-muted text-uppercase">Puntaje Total</small>
+                        </div>
+                        <div class="col-6">
+                            <div class="bg-light p-2 border">
+                                <small class="text-muted">Espacio para QR</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="text-start">
+                        <h5>Información Personal</h5>
+                        <p><strong>Email:</strong> {{mail}}</p>
+                        <p><strong>Ubicación:</strong> {{ciudad}}, {{pais}}</p>
+                        <p><strong>Sexo:</strong> {{sexo}}</p>
+                        <p><strong>Año de Nacimiento:</strong> {{anio_nacimiento}}</p>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="/lobby" class="btn btn-outline-primary">Volver al Lobby</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>footer}}
