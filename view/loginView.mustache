@@ -18,6 +18,18 @@
                 <div class="card login-card shadow-lg border-0">
                     <div class="card-body p-4 p-md-5">
 
+                        {{#verificado_ok}}
+                            <div class="alert alert-success">
+                                <i class="bi bi-check-circle me-2"></i>¡Cuenta verificada! Ya podés iniciar sesión.
+                            </div>
+                        {{/verificado_ok}}
+
+                        {{#verificado_error}}
+                            <div class="alert alert-danger">
+                                <i class="bi bi-x-circle me-2"></i>El link de verificación es inválido o ya fue usado.
+                            </div>
+                        {{/verificado_error}}
+
                         <form action="" method="POST" novalidate>
 
                             <!-- Usuario -->
@@ -71,7 +83,7 @@
 
                         </form>
                         <div class="d-grid mt-2">
-                            <a href="/registrar" class="btn btn-secondary btn-lg fw-semibold">Registrarse</a>
+                            <a href="/registro/ver" class="btn btn-secondary btn-lg fw-semibold">Registrarse</a>
                         </div>
                     </div>
                 </div>
