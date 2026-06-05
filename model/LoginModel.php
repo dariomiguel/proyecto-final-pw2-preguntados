@@ -9,6 +9,9 @@ class LoginModel
         $this->database = $database;
     }
 
+    public function autenticar($email, $senha){
+
+    }
 //    public function getVikingos()
 //    {
 //        $sql = "SELECT * FROM guerreros";

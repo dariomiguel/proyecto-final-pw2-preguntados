@@ -16,7 +16,11 @@ class LoginController
     public function ver()
     {
         Log::info("LoginController::ver");
-        $this->renderer->render("loginView");
+        $verificado = $this->request->get('verificado', '');
+        $this->renderer->render("loginView", [
+                'verificado_ok' => $verificado === '1',
+                'verificado_error' => $verificado === '0'
+            ]);
     }
 //
 //    public function alta()

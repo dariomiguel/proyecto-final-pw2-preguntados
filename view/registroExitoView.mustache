@@ -1,0 +1,28 @@
+{{>header}}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 text-center">
+            <div class="card shadow-sm border-success">
+                <div class="card-body p-5">
+                    <div class="mb-3" style="font-size: 3rem;">✅</div>
+                    <h2 class="card-title">¡Registro exitoso!</h2>
+                    <p class="text-muted mt-3">Te enviamos un mail de verificación para activar tu cuenta.</p>
+                    <hr>
+                    <div class="alert alert-warning text-start">
+                        <strong>⚠️ Simulación de mail</strong><br>
+                        En un entorno real esto llegaría a tu correo. Por ahora hacé click acá:
+                        <div class="mt-2">
+                            <a href="/registro/verificar?token={{token}}" class="btn btn-success btn-sm">
+                            ✔ Verificar mi cuenta
+                            </a>
+                        </div>
+                    </div>
+                    <a href="/login/ver" class="btn btn-outline-secondary mt-2">Ir al login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{>footer}}
