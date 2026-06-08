@@ -30,7 +30,7 @@
                             </div>
                         {{/verificado_error}}
 
-                        <form action="" method="POST" novalidate>
+                        <form action="/login/procesar" method="POST" novalidate>
 
                             <!-- Usuario -->
                             <div class="mb-3">
@@ -74,6 +74,11 @@
                                 </div>
                             </div>
 
+                            {{#error_login}}
+                                <div class="alert alert-danger">
+                                    <i class="bi bi-x-circle me-2"></i>Usuario o contraseña incorrectos.
+                                </div>
+                            {{/error_login}}
                             <!-- Botón -->
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg fw-semibold">
@@ -83,7 +88,7 @@
 
                         </form>
                         <div class="d-grid mt-2">
-                            <a href="/registro/ver" class="btn btn-secondary btn-lg fw-semibold">Registrarse</a>
+                            <a href="/registro" class="btn btn-secondary btn-lg fw-semibold">Registrarse</a>
                         </div>
                     </div>
                 </div>

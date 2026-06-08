@@ -48,14 +48,18 @@ class Configurator
         return new LoginModel($this->getDatabase());
     }
 
-    private function getUsuarioModel()
+    private function getRegistroModel()
     {
         return new RegistroModel($this->getDatabase());
     }
 
+    private function getUsuarioModel(){
+        return new UsuarioModel($this->getDatabase());
+    }
+
     public function getRegistroController()
     {
-        return new RegistroController($this->getUsuarioModel(), $this->getRenderer(), new Request());
+        return new RegistroController($this->getRegistroModel(), $this->getRenderer(), new Request());
     }
 
     public function getRouter()
@@ -75,14 +79,4 @@ class Configurator
         return $this->{$defaultGetter}();
     }
 
-//Dejo comentada esta parte que dejo bruno por si tira algun error si no tienen errores se puede borrar
-//    public function getOrDefault($controllerName,$default)
-//    {
-//        $getter ='get' . ucfirst($controllerName) . 'Controller';
-//        return method_exists($this, $getter) ? $this->{$getter}() : $default;
-//
-//    }
-    private function getUsuarioModel(){
-        return new UsuarioModel($this->getDatabase());
-    }
 }

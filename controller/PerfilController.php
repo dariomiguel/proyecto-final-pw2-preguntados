@@ -14,7 +14,7 @@ class PerfilController
         $this->request = $request;
     }
 
-    public function verPerfil()
+    public function ver()
     {
         $nombre = $this->request->get("nombre");
         $datoUsuario = $this->model->getDatosPerfil($nombre);
@@ -23,7 +23,7 @@ class PerfilController
             return $this->renderer->render("lobby");
         }
 
-        $rutaFisicaFoto = "public/fotos/" . $datoUsuario['foto_perfil'];
+        $rutaFisicaFoto = "public/uploads/" . $datoUsuario['foto_perfil'];
 
         if (empty($datoUsuario['foto_perfil']) || !file_exists($rutaFisicaFoto)) {
             $datoUsuario['foto_perfil'] = 'default-user.webp';

@@ -11,7 +11,8 @@ class LobbyController{
 
     public function ver(){
         $datos = [
-            'nombre_usuario' => 'user_test',
+            'sesionIniciada' => isset($_SESSION["usuario"]),
+            'nombre_usuario' => $_SESSION["usuario"]["nombre"] ??  'user_test',
             'puntaje_total' => '350',
             'partidas' => [
                 ['id' => '101', 'resultado' => '15'],

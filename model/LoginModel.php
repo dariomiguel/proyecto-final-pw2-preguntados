@@ -9,8 +9,12 @@ class LoginModel
         $this->database = $database;
     }
 
-    public function autenticar($email, $senha){
-
+    public function autenticar($username, $password) {
+        $sql = "SELECT * FROM usuarios WHERE nombre_usuario = ? AND cuenta_validada = 1";
+        $filas = $this->database->query($sql, [$username]);
+        if (empty($filas)) return false;
+        $usuario = $filas[0];
+        return password_verify($password, $usuario['contrasenia']) ? $usuario : false;
     }
 //    public function getVikingos()
 //    {
