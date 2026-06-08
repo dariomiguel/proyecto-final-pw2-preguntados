@@ -3,7 +3,7 @@ stages:
 deploy_to_infinityfree:
   stage:
     deploy
-  image: alpine:latest
+  image: debian:stable-slim
   before_script:
     - apt-get update -qq
     - apt-get install -y lftp
