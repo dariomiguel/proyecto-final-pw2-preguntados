@@ -16,7 +16,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand" href="#">Preguntados.UNLaM</a>
+            <a class="navbar-brand" href="/lobby">Preguntados.UNLaM</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuNavegacion" aria-controls="menuNavegacion" aria-expanded="false" aria-label="Alternar navegación">
                 <span class="navbar-toggler-icon"></span>
@@ -37,7 +37,7 @@
                     </li>
                     {{#sesionIniciada}}
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="perfil">Perfil</a>
+                            <a class="nav-link active" aria-current="page" href="/perfil/ver?nombre={{nombre_usuario}}">Perfil</a>
                         </li>
                         <li class="nav-item"> <a class="nav-link" href="/login/logout">Cerrar sesión</a> </li>
                     {{/sesionIniciada}}

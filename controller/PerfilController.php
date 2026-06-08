@@ -32,6 +32,9 @@ class PerfilController
         $urlPerfil = "http://localhost/perfil/verPerfil?nombre=" . $datoUsuario['nombre_usuario'];
         $datoUsuario['url_qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($urlPerfil);
 
-        return $this->renderer->render("perfil", $datoUsuario);
+        return $this->renderer->render("perfil", array_merge($datoUsuario, [
+            'sesionIniciada' => isset($_SESSION["usuario"]),
+            'usuario_logueado' => $_SESSION["usuario"] ?? null
+        ]));
     }
 }
