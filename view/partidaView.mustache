@@ -19,18 +19,35 @@
                 <hr class="border-dark opacity-25 mb-4">
 
                 <div class="d-grid gap-3">
-                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
-                        <span class="fw-bold me-2">A.</span> {{opcion_a}}
-                    </button>
-                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
-                        <span class="fw-bold me-2">B.</span> {{opcion_b}}
-                    </button>
-                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
-                        <span class="fw-bold me-2">C.</span> {{opcion_c}}
-                    </button>
-                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
-                        <span class="fw-bold me-2">D.</span> {{opcion_d}}
-                    </button>
+
+                    <form action="/partida/validarRespuesta" method="POST">
+                        <input type="hidden" name="id_pregunta" value="{{id}}">
+                        <button type="submit" name="opcion_elegida" value="A" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
+                            <span class="fw-bold me-2">A.</span> {{opcion_a}}
+                        </button>
+                    </form>
+
+                    <form action="/partida/validarRespuesta" method="POST">
+                        <input type="hidden" name="id_pregunta" value="{{id}}">
+                        <button type="submit" name="opcion_elegida" value="B" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
+                            <span class="fw-bold me-2">B.</span> {{opcion_b}}
+                        </button>
+                    </form>
+
+                    <form action="/partida/validarRespuesta" method="POST">
+                        <input type="hidden" name="id_pregunta" value="{{id}}">
+                        <button type="submit" name="opcion_elegida" value="C" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
+                            <span class="fw-bold me-2">C.</span> {{opcion_c}}
+                        </button>
+                    </form>
+
+                    <form action="/partida/validarRespuesta" method="POST">
+                        <input type="hidden" name="id_pregunta" value="{{id}}">
+                        <button type="submit" name="opcion_elegida" value="D" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
+                            <span class="fw-bold me-2">D.</span> {{opcion_d}}
+                        </button>
+                    </form>
+
                 </div>
 
                 <div class="mt-4 text-center">
