@@ -1,0 +1,46 @@
+{{>header}}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card shadow-lg p-4 text-center border-0 text-dark"
+                 id="contenedor-trivia"
+                 style="background-color: {{color_hexadecimal}}; border-radius: 20px;">
+
+                <div class="mb-3 text-uppercase fw-bold small text-dark opacity-75">
+                    Categoría: {{nombre_categoria}}
+                </div>
+
+                <h2 class="h3 fw-bold mb-4 text-dark">
+                    {{pregunta}}
+                </h2>
+
+                <hr class="border-dark opacity-25 mb-4">
+
+                <div class="d-grid gap-3">
+                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
+                        <span class="fw-bold me-2">A.</span> {{opcion_a}}
+                    </button>
+                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
+                        <span class="fw-bold me-2">B.</span> {{opcion_b}}
+                    </button>
+                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
+                        <span class="fw-bold me-2">C.</span> {{opcion_c}}
+                    </button>
+                    <button type="button" class="btn btn-light btn-outline-info btn-lg py-3 text-start px-4 border-2 shadow-sm text-dark">
+                        <span class="fw-bold me-2">D.</span> {{opcion_d}}
+                    </button>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <button type="button" class="btn btn-sm btn-link text-muted text-decoration-none small">
+                        🏳️ Reportar pregunta inválida
+                    </button>
+                </div>
+
+            </div> </div>
+    </div>
+</div>
+
+{{>footer}}
