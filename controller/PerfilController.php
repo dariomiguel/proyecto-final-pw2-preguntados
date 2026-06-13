@@ -34,7 +34,9 @@ class PerfilController
 
         return $this->renderer->render("perfil", array_merge($datoUsuario, [
             'sesionIniciada' => isset($_SESSION["usuario"]),
-            'usuario_logueado' => $_SESSION["usuario"] ?? null
+            'esAdmin'        => ($_SESSION["usuario"]["rol"] ?? '') === 'Administrador',
+            'nombre_usuario' => $_SESSION["usuario"]["nombre_usuario"] ?? '',
+            'usuario_logueado' => $_SESSION["usuario"] ?? null,
         ]));
     }
 }

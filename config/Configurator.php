@@ -23,6 +23,15 @@ class Configurator
         return new LoginController($this->getLoginModel(), $this->getRenderer(), new Request());
     }
 
+    public function getPreguntaController(){
+        return new PreguntaController($this->getPreguntaModel(), $this->getRenderer(), new Request());
+    }
+
+    private function getPreguntaModel()
+    {
+        return new PreguntaModel($this->getDatabase());
+    }
+
     private function getDatabase()
     {
         return new MyDatabase(
@@ -78,5 +87,7 @@ class Configurator
         $defaultGetter = 'get' . ucfirst($defaultControllerName) . 'Controller';
         return $this->{$defaultGetter}();
     }
+
+
 
 }

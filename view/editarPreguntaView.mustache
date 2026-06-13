@@ -1,0 +1,60 @@
+{{>header}}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h2 class="card-title mb-4 text-center">Editar pregunta</h2>
+
+                    <form action="/pregunta/actualizar" method="POST" novalidate>
+                        <input type="hidden" name="id" value="{{pregunta.id}}">
+                        <div class="row g-3">
+
+                            <div class="col-12">
+                                <label class="form-label">Enunciado *</label>
+                                <textarea name="enunciado" rows="3"
+                                          class="form-control {{#errores.enunciado}}is-invalid{{/errores.enunciado}}">{{pregunta.enunciado}}</textarea>
+                                {{#errores.enunciado}}<div class="invalid-feedback">{{errores.enunciado}}</div>{{/errores.enunciado}}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Categoría *</label>
+                                <select name="categoria_id" class="form-select {{#errores.categoria_id}}is-invalid{{/errores.categoria_id}}">
+                                    <option value="">Seleccioná una categoría</option>
+                                    {{#categorias}}
+                                        <option value="{{id}}" {{#seleccionada}}selected{{/seleccionada}}>{{nombre}}</option>
+                                    {{/categorias}}
+                                </select>
+                                {{#errores.categoria_id}}<div class="invalid-feedback">{{errores.categoria_id}}</div>{{/errores.categoria_id}}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Respuestas *</label>
+                                {{#errores.correcta}}<div class="text-danger small mb-2">{{errores.correcta}}</div>{{/errores.correcta}}
+
+                                {{#pregunta.respuestas}}
+                                    <div class="input-group mb-2">
+                                        <input type="hidden" name="respuesta_id_{{indice}}" value="{{id}}">
+                                        <div class="input-group-text">
+                                            <input type="radio" name="correcta" value="{{indice}}" {{#es_correcta}}checked{{/es_correcta}}>
+                                        </div>
+                                        <input type="text" name="respuesta_{{indice}}"
+                                               class="form-control {{#error}}is-invalid{{/error}}"
+                                               value="{{texto}}">
+                                    </div>
+                                {{/pregunta.respuestas}}
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
+                                <a href="/pregunta/pendientes" class="btn btn-outline-secondary w-100 mt-2">Cancelar</a>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{>footer}}
