@@ -67,8 +67,7 @@ CREATE TABLE usuarios_preguntas_vistas (
 
 INSERT INTO usuarios
 (nombre, apellido, anio_nacimiento, sexo, pais, ciudad, mail, contrasenia, nombre_usuario, cuenta_validada, rol)
-VALUES
-    ('Admin', 'Admin', 2000, 'Prefiero no cargarlo', 'Argentina', 'Buenos Aires',
-     'admin@admin.com',
-     '$2y$10$77mq11Fvv5ktPsFV95awEe4vW7v8oRLOVA3g0S24TZGAU2QnI2OES',
-     'admin', 1, 'Administrador');
+VALUES ('Admin', 'Admin', 2000, 'Prefiero no cargarlo', 'Argentina', 'Buenos Aires',
+        'admin@admin.com',
+        '$2y$10$77mq11Fvv5ktPsFV95awEe4vW7v8oRLOVA3g0S24TZGAU2QnI2OES',
+        'admin', 1, 'Administrador');

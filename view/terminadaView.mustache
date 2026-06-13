@@ -1,0 +1,36 @@
+{{>header}}
+
+<div class="container my-5 d-flex justify-content-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card shadow-lg p-5 text-center border-0 bg-dark text-white" style="border-radius: 20px;">
+
+                <div class="display-1 mb-3">🎮</div>
+
+                <h1 class="fw-bold mb-2">¡Fin de la Partida!</h1>
+                <p class="text-white-50 mb-4">La respuesta elegida fue incorrecta.</p>
+
+                <div class="bg-secondary bg-opacity-25 rounded-3 p-4 mb-4">
+                    <span class="text-uppercase small fw-bold text-white-50 d-block mb-1">Puntaje Final</span>
+                    <h2 class="display-4 fw-bold text-info m-0 mb-3">{{puntaje_final}}</h2>
+
+                    <div class="alert alert-danger bg-danger bg-opacity-10 border-danger text-white m-0 py-2 small" role="alert">
+                        💡 La respuesta correcta era: <strong class="text-info">{{texto_correcta}}</strong>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <a href="/partida/jugar" class="btn btn-info btn-lg fw-bold text-dark py-3" style="border-radius: 12px;">
+                        🔄 Volver a Jugar
+                    </a>
+                    <a href="/lobby" class="btn btn-outline-light btn-lg py-3" style="border-radius: 12px;">
+                        🏠 Ir al Lobby
+                    </a>
+                </div>
+
+            </div> </div>
+    </div>
+</div>
+
+{{>footer}}

@@ -21,6 +21,6 @@ class LobbyController{
                 ['id' => '102', 'resultado' => '8']
             ]
         ];
-        $this->renderer->render('lobby', $datos);
+        $this->renderer->render('lobbyView', $datos);
     }
 }
