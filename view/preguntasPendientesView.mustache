@@ -1,0 +1,40 @@
+{{>header}}
+<div class="container my-5">
+    <h2 class="mb-4">Preguntas pendientes de aprobación</h2>
+
+    {{^preguntas}}
+        <div class="alert alert-info">No hay preguntas pendientes.</div>
+    {{/preguntas}}
+
+    {{#preguntas}}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{enunciado}}</h5>
+                <p class="text-muted small mb-2">Categoría: {{categoria}} — Sugerida por: {{nombre_usuario}}</p>
+
+
+                <ul class="list-group list-group-flush mb-3">
+                    {{#respuestas}}
+                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
+                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
+                        </li>
+                    {{/respuestas}}
+                </ul>
+
+                <form action="/pregunta/aprobar" method="POST" class="d-inline">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                </form>
+
+                <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                </form>
+
+                <a href="/pregunta/editar?id={{id}}" class="btn btn-primary btn-sm">Editar</a>
+            </div>
+        </div>
+    {{/preguntas}}
+
+</div>
+{{>footer}}

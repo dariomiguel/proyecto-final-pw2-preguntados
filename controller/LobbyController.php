@@ -12,6 +12,7 @@ class LobbyController{
     public function ver(){
         $datos = [
             'sesionIniciada' => isset($_SESSION["usuario"]),
+            'esAdmin' => ($_SESSION["usuario"]["rol"] ?? '') === 'Administrador',
             'nombre_usuario' => $_SESSION["usuario"]["nombre_usuario"] ??  'user_test',
             'puntaje_total' => '350',
             'partidas' => [

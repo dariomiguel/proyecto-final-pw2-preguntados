@@ -25,21 +25,33 @@
             <div class="collapse navbar-collapse" id="menuNavegacion">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     {{^sesionIniciada}}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/login">Iniciar Sesión</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/registro">Registrarse</a>
-                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Iniciar Sesión</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/registro">Registrarse</a>
+                        </li>
                     {{/sesionIniciada}}
-                    <li class="nav-item d-none d-lg-block">
-                        <span class="nav-link text-secondary">|</span>
-                    </li>
                     {{#sesionIniciada}}
+                        {{#esAdmin}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pregunta/pendientes">Preguntas pendientes</a>
+                        </li>
+                        {{/esAdmin}}
+                        {{^esAdmin}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/pregunta/ver">Sugerir Pregunta</a>
+                        </li>
+                        {{/esAdmin}}
+                        <li class="nav-item d-none d-lg-block">
+                            <span class="nav-link text-secondary">|</span>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/perfil/ver?nombre={{nombre_usuario}}">Perfil</a>
                         </li>
-                        <li class="nav-item"> <a class="nav-link" href="/login/logout">Cerrar sesión</a> </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login/logout">Cerrar sesión</a>
+                        </li>
                     {{/sesionIniciada}}
                 </ul>
             </div>
