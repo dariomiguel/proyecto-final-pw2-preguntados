@@ -64,10 +64,18 @@ class Configurator{
 
     public function getPartidaController(){
         return new PartidaController($this->getPartidaModel(), $this->getRenderer(), new Request());
-}
+    }
 
     private function getPartidaModel(){
         return new PartidaModel($this->getDatabase());
+    }
+
+    public function getPreguntaController(){
+        return new PreguntaController($this->getPreguntaModel(), $this->getRenderer(), new Request());
+    }
+
+    private function getPreguntaModel(){
+        return new PreguntaModel($this->getDatabase());
     }
 
 }

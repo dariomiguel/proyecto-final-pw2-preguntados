@@ -97,7 +97,7 @@ class PreguntaController
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'aprobada');
-        Redirect::to('/preguntasPendientes');
+        Redirect::to('/pregunta/pendientes');
     }
 
     public function rechazar(){
@@ -195,7 +195,7 @@ class PreguntaController
 
         $correcta = (int) $correctaRaw;
         $this->model->actualizar($idPregunta, $enunciado, $categoria_id, $respuestas);
-        Redirect::to('/preguntas/pendientes');
+        Redirect::to('/pregunta/pendientes');
     }
 
 
