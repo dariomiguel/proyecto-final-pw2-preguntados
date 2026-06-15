@@ -14,6 +14,9 @@ class PartidaController{
 
     public function jugar(){
         $pregunta = $this->model->obtenerPreguntaAleatoria();
+        $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
+        $pregunta['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
+        $pregunta['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
 
         if(!isset($_SESSION['preguntas_vistas'])){
             $_SESSION['preguntas_vistas'] = [];
@@ -58,6 +61,9 @@ class PartidaController{
     public function terminada(){
         $data['puntaje_final'] = $_SESSION['puntaje_final'] ?? 0;
         $data['texto_correcta'] = $_SESSION['texto_correcta'] ?? "";
+        $data['sesionIniciada'] = isset($_SESSION["usuario"]);
+        $data['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
+        $data['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
         $this->renderer->render("terminadaView", $data);
         unset($_SESSION['puntaje_final']);
         unset($_SESSION['texto_correcta']);

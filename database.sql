@@ -24,7 +24,8 @@ CREATE TABLE usuarios (
 CREATE TABLE categorias (
                             id INT AUTO_INCREMENT PRIMARY KEY,
                             nombre VARCHAR(50) NOT NULL,
-                            color VARCHAR(7) NOT NULL DEFAULT '#000000'
+                            color VARCHAR(7) NOT NULL DEFAULT '#000000',
+                            color_secundario VARCHAR(7) NOT NULL DEFAULT '#000000'
 );
 
 CREATE TABLE preguntas (
@@ -72,15 +73,15 @@ VALUES ('Admin', 'Admin', 2000, 'Prefiero no cargarlo', 'Argentina', 'Buenos Air
         '$2y$10$77mq11Fvv5ktPsFV95awEe4vW7v8oRLOVA3g0S24TZGAU2QnI2OES',
         'admin', 1, 'Administrador');
 
-INSERT INTO categorias (nombre, color)
+INSERT INTO categorias (nombre, color, color_secundario)
 VALUES
-    ('Geografía', '#3498DB'),
-    ('Historia', '#F1C40F'),
-    ('Arte', '#9B59B6'),
-    ('Ciencia', '#2ECC71'),
-    ('Entretenimiento', '#E67E22'),
-    ('Deportes', '#E74C3C'),
-    ('Programación', '#6C5CE7');
+    ('Geografía', '#3498DB', '#62AFE3'),
+    ('Historia', '#F1C40F', '#F4D03F'),
+    ('Arte', '#9B59B6','#B27FC7'),
+    ('Ciencia', '#2ECC71','#54D88C'),
+    ('Entretenimiento', '#E67E22','#EB9A51'),
+    ('Deportes', '#E74C3C','E74C3C'),
+    ('Programación', '#6C5CE7','#9F94EF');
 
 -- Pregunta 1
 INSERT INTO preguntas (

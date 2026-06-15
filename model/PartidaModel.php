@@ -15,7 +15,8 @@ class PartidaModel{
                 p.id,
                 p.enunciado,
                 c.nombre AS nombre_categoria,
-                c.color AS color_categoria
+                c.color AS color_categoria,
+                c.color_secundario AS color_categoria_sec
             FROM preguntas p
             INNER JOIN categorias c
                 ON p.categoria_id = c.id
