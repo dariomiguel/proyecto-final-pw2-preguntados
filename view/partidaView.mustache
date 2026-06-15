@@ -13,40 +13,45 @@
                 </div>
 
                 <h2 class="h3 fw-bold mb-4 text-dark">
-                    {{pregunta}}
+                    {{enunciado}}
                 </h2>
 
                 <hr class="border-dark opacity-25 mb-4">
 
                 <div class="d-grid gap-3">
 
-                    <form action="/partida/validarRespuesta" method="POST">
-                        <input type="hidden" name="id_pregunta" value="{{id}}">
-                        <button type="submit" name="opcion_elegida" value="A" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
-                            <span class="fw-bold me-2">A.</span> {{opcion_a}}
-                        </button>
-                    </form>
+                    {{#respuestas}}
 
-                    <form action="/partida/validarRespuesta" method="POST">
-                        <input type="hidden" name="id_pregunta" value="{{id}}">
-                        <button type="submit" name="opcion_elegida" value="B" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
-                            <span class="fw-bold me-2">B.</span> {{opcion_b}}
-                        </button>
-                    </form>
+                        <form action="/partida/validarRespuesta" method="POST">
 
-                    <form action="/partida/validarRespuesta" method="POST">
-                        <input type="hidden" name="id_pregunta" value="{{id}}">
-                        <button type="submit" name="opcion_elegida" value="C" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
-                            <span class="fw-bold me-2">C.</span> {{opcion_c}}
-                        </button>
-                    </form>
+                            <input
+                                    type="hidden"
+                                    name="id_pregunta"
+                                    value="{{pregunta_id}}">
 
-                    <form action="/partida/validarRespuesta" method="POST">
-                        <input type="hidden" name="id_pregunta" value="{{id}}">
-                        <button type="submit" name="opcion_elegida" value="D" class="btn btn-light btn-outline-info btn-lg w-100 py-3 text-start px-4 border-2 shadow-sm text-dark">
-                            <span class="fw-bold me-2">D.</span> {{opcion_d}}
-                        </button>
-                    </form>
+                            <button
+                                    type="submit"
+                                    name="respuesta_id"
+                                    value="{{id}}"
+
+                                    class="btn btn-light
+                                           btn-outline-info
+                                           btn-lg
+                                           w-100
+                                           py-3
+                                           text-start
+                                           px-4
+                                           border-2
+                                           shadow-sm
+                                           text-dark">
+
+                                {{texto}}
+
+                            </button>
+
+                        </form>
+
+                    {{/respuestas}}
 
                 </div>
 
@@ -56,7 +61,8 @@
                     </button>
                 </div>
 
-            </div> </div>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -71,3 +71,122 @@ VALUES ('Admin', 'Admin', 2000, 'Prefiero no cargarlo', 'Argentina', 'Buenos Air
         'admin@admin.com',
         '$2y$10$77mq11Fvv5ktPsFV95awEe4vW7v8oRLOVA3g0S24TZGAU2QnI2OES',
         'admin', 1, 'Administrador');
+
+INSERT INTO categorias (nombre, color)
+VALUES
+    ('Geografía', '#3498DB'),
+    ('Historia', '#F1C40F'),
+    ('Arte', '#9B59B6'),
+    ('Ciencia', '#2ECC71'),
+    ('Entretenimiento', '#E67E22'),
+    ('Deportes', '#E74C3C'),
+    ('Programación', '#6C5CE7');
+
+-- Pregunta 1
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Cuál es la capital de Argentina?',
+           1,
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (1, 'Buenos Aires', 1),
+    (1, 'Córdoba', 0),
+    (1, 'Rosario', 0),
+    (1, 'Mendoza', 0);
+
+
+-- Pregunta 2
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Quién escribió Don Quijote de la Mancha?',
+           3,
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (2, 'Miguel de Cervantes', 1),
+    (2, 'Gabriel García Márquez', 0),
+    (2, 'Jorge Luis Borges', 0),
+    (2, 'Pablo Neruda', 0);
+
+
+-- Pregunta 3
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Cuál es el planeta más grande del sistema solar?',
+           4,
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (3, 'Júpiter', 1),
+    (3, 'Saturno', 0),
+    (3, 'Marte', 0),
+    (3, 'Venus', 0);
+
+
+-- Pregunta 4
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿En qué lenguaje está escrito principalmente PHP?',
+           7,
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (4, 'C', 1),
+    (4, 'Java', 0),
+    (4, 'Python', 0),
+    (4, 'JavaScript', 0);
+
+
+-- Pregunta 5
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Cuánto es 7 x 8?',
+           4,
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (5, '56', 1),
+    (5, '48', 0),
+    (5, '54', 0),
+    (5, '64', 0);
