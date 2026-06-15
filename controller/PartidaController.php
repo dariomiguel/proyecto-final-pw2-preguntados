@@ -24,10 +24,6 @@ class PartidaController{
 
         $_SESSION['preguntas_vistas'] [] = $pregunta ['id'];
 
-        echo "<pre>";
-        var_dump($pregunta);
-        echo "</pre>";
-        die();
         return $this->renderer->render("partidaView", $pregunta );
     }
 

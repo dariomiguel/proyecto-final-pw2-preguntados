@@ -80,7 +80,7 @@ VALUES
     ('Arte', '#9B59B6','#B27FC7'),
     ('Ciencia', '#2ECC71','#54D88C'),
     ('Entretenimiento', '#E67E22','#EB9A51'),
-    ('Deportes', '#E74C3C','E74C3C'),
+    ('Deportes', '#E74C3C','#ED7A6E'),
     ('Programación', '#6C5CE7','#9F94EF');
 
 -- Pregunta 1
