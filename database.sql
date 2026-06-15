@@ -191,3 +191,108 @@ VALUES
     (5, '48', 0),
     (5, '54', 0),
     (5, '64', 0);
+
+-- Pregunta 6 (Categoría: Historia)
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿En qué año llegó el hombre a la Luna por primera vez?',
+           2,  -- Historia
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (6, '1969', 1),
+    (6, '1965', 0),
+    (6, '1972', 0),
+    (6, '1961', 0);
+
+-- Pregunta 7 (Categoría: Entretenimiento)
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Quién interpreta a Iron Man en el Universo Cinematográfico de Marvel?',
+           5,  -- Entretenimiento
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (7, 'Robert Downey Jr.', 1),
+    (7, 'Chris Evans', 0),
+    (7, 'Scarlett Johansson', 0),
+    (7, 'Chris Hemsworth', 0);
+
+-- Pregunta 8 (Categoría: Deportes)
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Cuál es el país con más títulos de la Copa Mundial de Fútbol masculina?',
+           6,  -- Deportes
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (8, 'Brasil', 1),
+    (8, 'Alemania', 0),
+    (8, 'Argentina', 0),
+    (8, 'Italia', 0);
+
+-- Pregunta 9 (Categoría: Ciencia)
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Qué órgano del cuerpo humano es el principal encargado de bombear la sangre?',
+           4,  -- Ciencia
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (9, 'El corazón', 1),
+    (9, 'El cerebro', 0),
+    (9, 'El hígado', 0),
+    (9, 'Los pulmones', 0);
+
+-- Pregunta 10 (Categoría: Arte)
+INSERT INTO preguntas (
+    enunciado,
+    categoria_id,
+    estado,
+    creado_por_usuario_id
+)
+VALUES (
+           '¿Quién pintó "La noche estrellada"?',
+           3,  -- Arte
+           'aprobada',
+           1
+       );
+
+INSERT INTO respuestas (pregunta_id, texto, es_correcta)
+VALUES
+    (10, 'Vincent van Gogh', 1),
+    (10, 'Pablo Picasso', 0),
+    (10, 'Claude Monet', 0),
+    (10, 'Salvador Dalí', 0);
