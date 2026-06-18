@@ -1,0 +1,79 @@
+{{>header}}
+
+<div class="container mt-5" style="max-width: 600px;">
+    <h2 class="text-white mb-4">Editar Mi Perfil</h2>
+
+    {{#error}}
+        <div class="alert alert-danger bg-danger bg-opacity-10 text-white border-danger small py-2" role="alert">
+            ⚠️ {{error}}
+        </div>
+    {{/error}}
+
+    <form action="/perfil/actualizarPerfil" method="POST" class="bg-dark p-4 rounded-3 text-white">
+
+        <div class="mb-3">
+            <label for="nombre_usuario" class="form-label text-white-50 small">Nombre de Usuario *</label>
+            <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="nombre_usuario" name="nombre_usuario" value="{{nombre_usuario}}" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="nombre" class="form-label text-white-50 small">Primer Nombre *</label>
+                <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="nombre" name="nombre" value="{{nombre}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="segundo_nombre" class="form-label text-white-50 small">Segundo Nombre</label>
+                <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="segundo_nombre" name="segundo_nombre" value="{{segundo_nombre}}">
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="apellido" class="form-label text-white-50 small">Apellido *</label>
+            <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="apellido" name="apellido" value="{{apellido}}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="mail" class="form-label text-white-50 small">Email *</label>
+            <input type="email" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="mail" name="mail" value="{{mail}}" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="anio_nacimiento" class="form-label text-white-50 small">Año de Nacimiento *</label>
+                <input type="number" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="anio_nacimiento" name="anio_nacimiento" value="{{anio_nacimiento}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="sexo" class="form-label text-white-50 small">Sexo *</label>
+                <select class="form-select bg-secondary bg-opacity-25 text-white border-secondary" id="sexo" name="sexo" required>
+                    <option value="Masculino" {{#sexo_masculino}}selected{{/sexo_masculino}}>Masculino</option>
+                    <option value="Femenino" {{#sexo_femenino}}selected{{/sexo_femenino}}>Femenino</option>
+                    <option value="Prefiero no cargarlo" {{#sexo_ninguno}}selected{{/sexo_ninguno}}>Prefiero no cargarlo</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="pais" class="form-label text-white-50 small">País *</label>
+                <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="pais" name="pais" value="{{pais}}" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="ciudad" class="form-label text-white-50 small">Ciudad *</label>
+                <input type="text" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="ciudad" name="ciudad" value="{{ciudad}}" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="contrasenia" class="form-label text-white-50 small">Nueva Contraseña</label>
+            <input type="password" class="form-control bg-secondary bg-opacity-25 text-white border-secondary" id="contrasenia" name="contrasenia">
+            <div class="form-text small text-white-50">Dejar en blanco si no desea cambiarla.</div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2 mt-4">
+            <a href="/perfil/ver?nombre={{nombre_usuario}}" class="btn btn-outline-secondary btn-sm text-white">Cancelar</a>
+            <button type="submit" class="btn btn-info btn-sm fw-bold">Guardar Cambios</button>
+        </div>
+    </form>
+</div>
+
+{{>footer}}
