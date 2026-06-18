@@ -32,7 +32,6 @@ class Configurator{
         return new MustacheRenderer(__DIR__ . '/../view');
     }
 
-
     private function getLoginModel(){
         return new LoginModel($this->getDatabase());
     }
@@ -76,6 +75,10 @@ class Configurator{
 
     private function getPreguntaModel(){
         return new PreguntaModel($this->getDatabase());
+    }
+
+    public function getRankingController(){
+        return new RankingController($this->getUsuarioModel(), $this->getRenderer(), new Request());
     }
 
 }

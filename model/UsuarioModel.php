@@ -27,4 +27,11 @@ class UsuarioModel
 
         return $this->database->execute($sql, $parametros);
     }
+
+    public function getRankingGlobal(){
+
+        $sql = "SELECT nombre_usuario, puntaje_total, foto_perfil FROM usuarios WHERE rol = 'Jugador' ORDER BY puntaje_total DESC";
+        $resultado = $this->database->query($sql);
+        return !empty($resultado) ? $resultado : null;
+    }
 }
