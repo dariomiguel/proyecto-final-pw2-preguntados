@@ -1,0 +1,86 @@
+{{>header}}
+
+<div class="container my-5" style="max-width: 900px;">
+    <div class="card bg-dark text-white shadow p-4 rounded-3 mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                <img src="/public/uploads/{{usuario.foto_perfil}}"
+                     alt="Foto de {{usuario.nombre_usuario}}"
+                     class="rounded-circle border border-info img-fluid"
+                     style="width: 130px; height: 130px; object-fit: cover;">
+            </div>
+
+            <div class="col-md-5">
+                <h2 class="fw-bold text-info mb-1">@{{usuario.nombre_usuario}}</h2>
+                <p class="text-white-50 mb-3">{{usuario.nombre}} {{usuario.apellido}}</p>
+                <p class="mb-1">📍 <strong>Ubicación:</strong> {{usuario.ciudad}}, {{usuario.pais}}</p>
+                <p class="mb-0">📅 <strong>Año de Nacimiento:</strong> {{usuario.anio_nacimiento}}</p>
+            </div>
+
+            <div class="col-md-4 text-center text-md-end mt-3 mt-md-0">
+                <div class="p-3 bg-secondary bg-opacity-10 rounded-3 border border-secondary">
+                    <span class="text-muted small d-block uppercase fw-bold">Puntaje Total Acumulado</span>
+                    <span class="display-6 fw-bold text-success">{{usuario.puntaje_total}} pts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7 mb-4">
+            <div class="card bg-dark text-white shadow p-4 rounded-3 h-100">
+                <h4 class="text-info mb-3 fw-bold">🎮 Historial de Partidas</h4>
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead>
+                            <tr class="text-muted small border-secondary">
+                                <th scope="col">ID Partida</th>
+                                <th scope="col">Fecha</th>
+                                <th scope="col" class="text-end">Puntaje</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#partidas}}
+                            <tr class="border-secondary">
+                                <td class="text-info fw-semibold">#{{id}}</td>
+                                <td class="small">{{fecha}}</td>
+                                <td class="text-end fw-bold text-success">{{puntaje}} pts</td>
+                            </tr>
+                            {{/partidas}}
+
+                            {{^partidas}}
+                            <tr>
+                                <td colspan="3" class="text-center text-muted py-4 small">Este jugador aún no ha completado ninguna partida.</td>
+                            </tr>
+                            {{/partidas}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5 mb-4">
+            <div class="card bg-dark text-white shadow p-4 rounded-3 h-100">
+                <h4 class="text-info mb-3 fw-bold">🗺️ Residencia del Jugador</h4>
+                <div class="rounded-3 overflow-hidden border border-secondary" style="height: 250px;">
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        frameborder="0"
+                        scrolling="no"
+                        marginheight="0"
+                        marginwidth="0"
+                        src="https://maps.google.com/maps?q={{usuario.ciudad}},{{usuario.pais}}&t=&z=13&ie=UTF8&iwloc=&output=embed">
+                    </iframe>
+                </div>
+                <span class="text-muted text-center small d-block mt-2">Mapa de {{usuario.ciudad}} generado automáticamente.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="/ranking/ver" class="btn btn-secondary btn-sm px-4 fw-bold shadow-sm text-white">Volver al Ranking</a>
+    </div>
+</div>
+
+{{>footer}}

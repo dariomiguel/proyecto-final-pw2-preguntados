@@ -34,4 +34,12 @@ class UsuarioModel
         $resultado = $this->database->query($sql);
         return !empty($resultado) ? $resultado : null;
     }
+
+    public function getPartidaPorUsuario($idUsuario){
+        $sql = "SELECT id,puntaje,fecha FROM partidas WHERE usuario_id = ? ORDER BY fecha DESC";
+        $resultado = $this->database->query($sql, array($idUsuario));
+        return !empty($resultado) ? $resultado : null;
+
+
+    }
 }

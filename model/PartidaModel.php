@@ -87,4 +87,6 @@ class PartidaModel{
 
         return $resultado[0]['texto'];
     }
+
+
 }

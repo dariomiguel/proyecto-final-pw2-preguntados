@@ -110,4 +110,22 @@ class PerfilController
         header("Location: /perfil/ver?nombre=" . $nombreUsuario);
         exit();
     }
+
+    public function verPublico(){
+        $nombreUsuario = $this->request->get('nombre');
+        $usuario = $this->model->getDatosPerfil($nombreUsuario);
+
+        if (empty($usuario['foto_perfil'])) {
+            $usuario['foto_perfil'] = 'default-user.webp';
+        }
+
+        $partidas = $this->model->getPartidaPorUsuario($usuario["id"]);
+
+        $data = [
+            "usuario" => $usuario,
+            "partidas" => $partidas,
+        ];
+        return $this->renderer->render("perfilPublicoView",$data);
+
+    }
 }
