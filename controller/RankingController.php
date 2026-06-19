@@ -20,6 +20,11 @@ class RankingController{
         $rankingModificado = [];
         foreach ($data['usuarios'] as $index => $usuario) {
             $usuario['puesto'] = $index + 1;
+
+            if (empty($usuario['foto_perfil'])) {
+                $usuario['foto_perfil'] = 'default-user.webp';
+            }
+
             $rankingModificado[] = $usuario;
         }
         $data['usuarios'] = $rankingModificado;
