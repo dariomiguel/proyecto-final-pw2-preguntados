@@ -13,10 +13,12 @@ class PartidaController{
     }
 
     public function jugar(){
-        $pregunta = $this->model->obtenerPreguntaAleatoria();
+        $id_usuario = $_SESSION["usuario"]["id"];
+        $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario);
         $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
         $pregunta['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
         $pregunta['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
+        $pregunta['yaVistaTodas'] = false;
 
         if(!isset($_SESSION['preguntas_vistas'])){
             $_SESSION['preguntas_vistas'] = [];
@@ -24,7 +26,19 @@ class PartidaController{
 
         $_SESSION['preguntas_vistas'] [] = $pregunta ['id'];
 
-        return $this->renderer->render("partidaView", $pregunta );
+        $cantPreguntasEnBD = $this->model->cantidadPreguntasEnBD($id_usuario);
+        $cantPreguntasYaEchasAUsuario = $this->model->cantidadPreguntasYaEchasAlUsuario($id_usuario);
+
+        $vistasCount = $cantPreguntasYaEchasAUsuario[0]['vistas'];
+        $totalCount  = $cantPreguntasEnBD[0]['total'];
+
+        if ($vistasCount != $totalCount) {
+            $this->model->guardarPreguntaVista($id_usuario, $pregunta ['id']);
+        } else {
+            $pregunta['yaVistaTodas'] = true;
+        }
+
+        return $this->renderer->render("partidaView", $pregunta);
     }
 
     public function validarRespuesta(){
