@@ -167,6 +167,8 @@ class PartidaModel
 
     public function verPreguntasYaEchasAlUsuario($usuarioId){
 
+
+
         $sql = "
         SELECT pregunta_id
         FROM usuarios_preguntas_vistas

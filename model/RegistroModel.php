@@ -14,8 +14,8 @@ class RegistroModel
         $sql = "INSERT INTO usuarios
                     (nombre, segundo_nombre, apellido, anio_nacimiento,
                      sexo, pais, ciudad, mail, contrasenia, nombre_usuario,
-                     foto_perfil, hash_validacion)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                     foto_perfil, hash_validacion, latitud, longitud)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $hash = password_hash($datos['contrasenia'], PASSWORD_BCRYPT);
 
@@ -32,6 +32,8 @@ class RegistroModel
             $datos['nombre_usuario'],
             $datos['foto_perfil'] ?? null,
             $datos['hash_validacion'] ?? null,
+            $datos['latitud'] ?? null,
+            $datos['longitud'] ?? null
         ]);
     }
 
@@ -42,5 +44,21 @@ class RegistroModel
 
         return $this->database->execute($sql, [$token]);
 
+    }
+
+    public function existeNombreUsuario($nombre_usuario) {
+        $resultado = $this->database->query(
+            "SELECT id FROM usuarios WHERE nombre_usuario = ?",
+            [$nombre_usuario]
+        );
+        return !empty($resultado);
+    }
+
+    public function existeMail($mail) {
+        $resultado = $this->database->query(
+            "SELECT id FROM usuarios WHERE mail = ?",
+            [$mail]
+        );
+        return !empty($resultado);
     }
 }

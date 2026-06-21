@@ -49,16 +49,42 @@
                                 {{#errores.sexo}}<div class="text-danger small mt-1">{{errores.sexo}}</div>{{/errores.sexo}}
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label">País *</label>
-                                <input type="text" name="pais" class="form-control {{#errores.pais}}is-invalid{{/errores.pais}}" value="{{datos.pais}}">
-                                {{#errores.pais}}<div class="invalid-feedback">{{errores.pais}}</div>{{/errores.pais}}
-                            </div>
+<!--                            <div class="col-md-6">-->
+<!--                                <label class="form-label">País *</label>-->
+<!--                                <input type="text" name="pais" class="form-control {{#errores.pais}}is-invalid{{/errores.pais}}" value="{{datos.pais}}">-->
+<!--                                {{#errores.pais}}<div class="invalid-feedback">{{errores.pais}}</div>{{/errores.pais}}-->
+<!--                            </div>-->
 
-                            <div class="col-md-6">
-                                <label class="form-label">Ciudad *</label>
-                                <input type="text" name="ciudad" class="form-control {{#errores.ciudad}}is-invalid{{/errores.ciudad}}" value="{{datos.ciudad}}">
-                                {{#errores.ciudad}}<div class="invalid-feedback">{{errores.ciudad}}</div>{{/errores.ciudad}}
+<!--                            <div class="col-md-6">-->
+<!--                                <label class="form-label">Ciudad *</label>-->
+<!--                                <input type="text" name="ciudad" class="form-control {{#errores.ciudad}}is-invalid{{/errores.ciudad}}" value="{{datos.ciudad}}">-->
+<!--                                {{#errores.ciudad}}<div class="invalid-feedback">{{errores.ciudad}}</div>{{/errores.ciudad}}-->
+<!--                            </div>-->
+
+                            <div class="col-12">
+                                <label class="form-label">Ubicación * <small class="text-muted">(hacé click en el mapa)</small></label>
+                                <div class="input-group mb-2">
+                                    <input type="text" id="buscadorMapa" class="form-control" placeholder="Buscá tu ciudad...">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="buscarUbicacion()">Buscar</button>
+                                </div>
+                                <div id="mapa" style="height: 300px; border-radius: 8px;" class="mb-2"></div>
+                                {{#errores.latitud}}<div class="text-danger small">{{errores.latitud}}</div>{{/errores.latitud}}
+                                <input type="hidden" name="latitud"  id="latitud"  value="{{datos.latitud}}">
+                                <input type="hidden" name="longitud" id="longitud" value="{{datos.longitud}}">
+                                <div class="row g-2 mt-1">
+                                    <div class="col-md-6">
+                                        <input type="text" name="pais" id="pais" placeholder="País *"
+                                               class="form-control {{#errores.pais}}is-invalid{{/errores.pais}}"
+                                               value="{{datos.pais}}" readonly>
+                                        {{#errores.pais}}<div class="invalid-feedback">{{errores.pais}}</div>{{/errores.pais}}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="text" name="ciudad" id="ciudad" placeholder="Ciudad *"
+                                               class="form-control {{#errores.ciudad}}is-invalid{{/errores.ciudad}}"
+                                               value="{{datos.ciudad}}" readonly>
+                                        {{#errores.ciudad}}<div class="invalid-feedback">{{errores.ciudad}}</div>{{/errores.ciudad}}
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-12">
@@ -106,4 +132,55 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+    const latInicial = parseFloat(document.getElementById('latitud').value) || -34.6;
+    const lngInicial = parseFloat(document.getElementById('longitud').value) || -58.4;
+    const mapa = L.map('mapa').setView([latInicial, lngInicial], 5);
+    let marcador = null;
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(mapa);
+
+    if (document.getElementById('latitud').value) {
+        marcador = L.marker([latInicial, lngInicial]).addTo(mapa);
+    }
+
+    function actualizarCampos(lat, lon) {
+        document.getElementById('latitud').value  = parseFloat(lat).toFixed(8);
+        document.getElementById('longitud').value = parseFloat(lon).toFixed(8);
+        fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`)
+                .then(r => r.json())
+                .then(d => {
+                    const addr = d.address;
+                    document.getElementById('pais').value   = addr.country || '';
+                    document.getElementById('ciudad').value = addr.city || addr.town || addr.village || addr.county || '';
+                });
+    }
+
+    mapa.on('click', function(e) {
+        const { lat, lng } = e.latlng;
+        if (marcador) marcador.remove();
+        marcador = L.marker([lat, lng]).addTo(mapa);
+        actualizarCampos(lat, lng);
+    });
+
+    function buscarUbicacion() {
+        const query = document.getElementById('buscadorMapa').value;
+        if (!query) return;
+        fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`)
+                .then(r => r.json())
+                .then(data => {
+                    if (data.length === 0) return alert('No se encontró la ubicación');
+                    const lat = data[0].lat;
+                    const lon = data[0].lon;
+                    mapa.setView([lat, lon], 13);
+                    if (marcador) marcador.remove();
+                    marcador = L.marker([lat, lon]).addTo(mapa);
+                    actualizarCampos(lat, lon);
+                });
+    }
+</script>
 {{>footer}}
