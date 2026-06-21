@@ -296,3 +296,9 @@ VALUES
     (10, 'Pablo Picasso', 0),
     (10, 'Claude Monet', 0),
     (10, 'Salvador Dalí', 0);
+
+
+-- alter para longitud y latitud
+ALTER TABLE usuarios
+    ADD COLUMN latitud DECIMAL(10,8) NULL,
+    ADD COLUMN longitud DECIMAL(11,8) NULL;

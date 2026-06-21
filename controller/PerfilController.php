@@ -73,6 +73,8 @@ class PerfilController
         $mail = $this->request->post("mail");
         $contraseniaPost = $this->request->post("contrasenia");
         $nombreUsuario = $this->request->post("nombre_usuario");
+        $latitud = $this->request->post("latitud");
+        $longitud = $this->request->post("longitud");
 
         if(empty($nombreUsuario) || empty($mail) || empty($nombre) || empty($apellido) || empty($anioNacimiento) || empty($sexo) || empty($pais) || empty($ciudad)){
             $data["error"] = "Todos los campos marcados con * son obligatorios";
@@ -101,7 +103,7 @@ class PerfilController
         $nombreUsuarioActual = $_SESSION["usuario"]["nombre_usuario"];
 
 
-        $this->model->editarPerfil($nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nombreUsuario, $nombreUsuarioActual);
+        $this->model->editarPerfil($nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nombreUsuario, $nombreUsuarioActual, $latitud, $longitud);
 
         $_SESSION["usuario"]["nombre_usuario"] = $nombreUsuario;
         $_SESSION["usuario"]["contrasenia"] = $contrasenia;

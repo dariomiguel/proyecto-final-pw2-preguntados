@@ -17,13 +17,13 @@ class UsuarioModel
         return !empty($resultado) ? $resultado[0] : null;
     }
 
-    public function editarPerfil($nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nuevoNombreUsuario, $nombreUsuarioActual){
+    public function editarPerfil($nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nuevoNombreUsuario, $nombreUsuarioActual, $latitud, $longitud){
 
         $sql = "UPDATE usuarios 
-            SET nombre = ?, segundo_nombre = ?, apellido = ?, anio_nacimiento = ?, sexo = ?, pais = ?, ciudad = ?, mail = ?, contrasenia = ?, nombre_usuario = ? 
+            SET nombre = ?, segundo_nombre = ?, apellido = ?, anio_nacimiento = ?, sexo = ?, pais = ?, ciudad = ?, mail = ?, contrasenia = ?, nombre_usuario = ?, latitud = ?, longitud = ? 
             WHERE nombre_usuario = ?";
 
-        $parametros = [$nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nuevoNombreUsuario, $nombreUsuarioActual];
+        $parametros = $parametros = [$nombre, $segundoNombre, $apellido, $anioNacimiento, $sexo, $pais, $ciudad, $mail, $contrasenia, $nuevoNombreUsuario, $latitud, $longitud, $nombreUsuarioActual];
 
         return $this->database->execute($sql, $parametros);
     }

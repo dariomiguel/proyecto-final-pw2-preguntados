@@ -32,11 +32,13 @@ class RegistroController
         $mail = $this->request->post('mail');
         $contrasenia = $this->request->post('contrasenia');
         $nombre_usuario = $this->request->post('nombre_usuario');
+        $latitud  = $this->request->post('latitud');
+        $longitud = $this->request->post('longitud');
 
         $errores = [];
         $datos = compact('nombre', 'segundo_nombre', 'apellido',
         'anio_nacimiento', 'sexo', 'pais', 'ciudad', 'mail'
-        , 'contrasenia', 'nombre_usuario');
+        , 'contrasenia', 'nombre_usuario', 'latitud', 'longitud');
 
 
         if (empty($nombre)) $errores['nombre'] = "El nombre es requerido";
@@ -53,6 +55,10 @@ class RegistroController
         }
         if (empty($nombre_usuario)) $errores['nombre_usuario'] = "El nombre de usuario es obligatorio.";
 
+        if (empty($latitud) || empty($longitud)) {
+            $errores['latitud'] = 'Seleccioná tu ubicación en el mapa.';
+        }
+
         $foto_perfil = null;
         if (isset($_FILES['foto_perfil']) && $_FILES['foto_perfil']['error'] === UPLOAD_ERR_OK) {
             $tiposPermitidos = ['image/jpeg', 'image/png', 'image/gif'];
@@ -66,6 +72,13 @@ class RegistroController
             } elseif ($_FILES['foto_perfil']['size'] > $maxTamano) {
                 $errores['foto_perfil'] = 'La imagen no puede superar los 2MB.';
             }
+        }
+
+        if ($this->model->existeNombreUsuario($nombre_usuario)) {
+            $errores['nombre_usuario'] = 'Ese nombre de usuario ya está en uso.';
+        }
+        if ($this->model->existeMail($mail)) {
+            $errores['mail'] = 'Ese mail ya está registrado.';
         }
 
         if (!empty($errores)) {
