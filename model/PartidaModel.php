@@ -10,10 +10,10 @@ class PartidaModel
         $this->database = $database;
     }
 
-    public function obtenerPreguntaAleatoria($usuarioId)
+    public function obtenerPreguntaAleatoria($usuarioId, $categoriaId)
     {
 
-        $pregunta = $this->obtenerPreguntaNoVistaAleatoria($usuarioId);
+        $pregunta = $this->obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId);
 
         if ($pregunta == null) {
 
@@ -28,6 +28,7 @@ class PartidaModel
             INNER JOIN categorias c
                 ON p.categoria_id = c.id
             WHERE p.estado = 'aprobada'
+            AND c.id = $categoriaId
             ORDER BY RAND()
             LIMIT 1
         ";
@@ -131,7 +132,7 @@ class PartidaModel
         return $this->database->query($sql);
     }
 
-    public function obtenerPreguntaNoVistaAleatoria($usuarioId)
+    public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId)
     {
 
         $sql = "
@@ -145,6 +146,7 @@ class PartidaModel
         INNER JOIN categorias c
             ON p.categoria_id = c.id
         WHERE p.estado = 'aprobada'
+        AND c.id = $categoriaId
         AND p.id NOT IN (
             SELECT pregunta_id
             FROM usuarios_preguntas_vistas
@@ -155,7 +157,6 @@ class PartidaModel
     ";
 
         $pregunta = $this->database->query($sql);
-
         if (empty($pregunta)) {
             return null;
         }
@@ -164,8 +165,6 @@ class PartidaModel
     }
 
     public function verPreguntasYaEchasAlUsuario($usuarioId){
-
-
 
         $sql = "
         SELECT pregunta_id

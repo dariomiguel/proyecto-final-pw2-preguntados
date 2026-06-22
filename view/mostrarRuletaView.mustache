@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lobby - Preguntados.UNLaM</title>
+
+    <link rel="stylesheet" href="../public/css/ruleta-style.css">
+
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<main class="app">
+    <div class="title">
+        <h1>A jugar!!</h1>
+        <p>Girá la ruleta para elegir categoría.</p>
+    </div>
+
+    <section class="wheel-shell" aria-label="Ruleta interactiva">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="wheel" width="900" height="900"></canvas>
+        <button id="spinBtn" class="spin-btn" aria-label="Girar ruleta">
+            GIRAR
+            <span class="small">¡Suerte!</span>
+        </button>
+    </section>
+
+</main>
+
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+    <div class="modal-card">
+        <h2 id="modalTitle">Resultado</h2>
+        <p id="modalDesc">La ruleta se detuvo en:</p>
+        <div id="resultBadge" class="result-badge">Opción 1</div>
+        <a id="closeModal" href="/partida/jugar" class="close-btn">Aceptar</a>
+    </div>
+</div>
+
+<script src="../public/js/mostrarRuleta.js"></script>

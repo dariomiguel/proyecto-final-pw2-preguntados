@@ -13,8 +13,14 @@ class PartidaController{
     }
 
     public function jugar(){
+        $id_categoria = (int)$_GET['idCategoria'];
+        $_SESSION['idCategoria'] = $id_categoria;
+
+//        var_dump($id_categoria);
+
         $id_usuario = $_SESSION["usuario"]["id"];
-        $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario);
+        $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario, $id_categoria);
+
         $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
         $pregunta['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
         $pregunta['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
@@ -95,6 +101,11 @@ class PartidaController{
         unset($_SESSION['texto_correcta']);
 
         $this->renderer->render("terminadaView", $data);
+    }
+
+    public function verRuleta()
+    {
+        $this->renderer->render("mostrarRuletaView", []);
     }
 
 }
