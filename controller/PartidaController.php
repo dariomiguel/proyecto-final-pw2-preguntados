@@ -33,7 +33,14 @@ class PartidaController{
             $respuesta['pregunta_id'] = $pregunta['id'];
         }
 
-        $_SESSION['preguntas_vistas'] [] = $pregunta ['id'];
+        $_SESSION['preguntas_vistas'][] = $pregunta['id'];
+
+        $yaVioEstaPregunta = $this->model->esPreguntaVistaPorUsuario($id_usuario, $pregunta['id']);
+
+        if (!$yaVioEstaPregunta) {
+            // Si no la vio, la guardamos en la base de datos de forma segura
+            $this->model->guardarPreguntaVista($id_usuario, $pregunta['id']);
+        }
 
         $cantPreguntasEnBD = $this->model->cantidadPreguntasEnBD($id_usuario);
         $cantPreguntasYaEchasAUsuario = $this->model->cantidadPreguntasYaEchasAlUsuario($id_usuario);
@@ -41,9 +48,7 @@ class PartidaController{
         $vistasCount = $cantPreguntasYaEchasAUsuario[0]['vistas'];
         $totalCount  = $cantPreguntasEnBD[0]['total'];
 
-        if ($vistasCount != $totalCount) {
-            $this->model->guardarPreguntaVista($id_usuario, $pregunta ['id']);
-        } else {
+        if ($vistasCount == $totalCount) {
             $pregunta['yaVistaTodas'] = true;
         }
 
@@ -107,6 +112,7 @@ class PartidaController{
     {
         $this->renderer->render("mostrarRuletaView", []);
     }
+
 
 }
 

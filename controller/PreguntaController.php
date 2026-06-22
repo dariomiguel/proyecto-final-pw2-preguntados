@@ -20,7 +20,7 @@ class PreguntaController
         Log::info("PreguntaController::ver");
         $categorias = $this->model->getCategorias();
         $enviada = $this->request->get('enviada') === '1';
-        $this->view->render('CrearPreguntaView', [
+        $this->view->render('crearPreguntaView', [
             'categorias'     => $categorias,
             'enviada'        => $enviada,
             'sesionIniciada' => isset($_SESSION['usuario']),

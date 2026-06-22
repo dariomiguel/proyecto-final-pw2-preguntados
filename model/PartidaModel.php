@@ -211,4 +211,14 @@ class PartidaModel
 
         return $resultado[0];
     }
+
+    public function esPreguntaVistaPorUsuario($id_usuario, $id_pregunta) {
+        $sql = "SELECT COUNT(*) as total 
+            FROM usuarios_preguntas_vistas 
+            WHERE usuario_id = $id_usuario AND pregunta_id = $id_pregunta";
+
+        $resultado = $this->database->query($sql);
+
+        return $resultado[0]['total'] > 0;
+    }
 }
