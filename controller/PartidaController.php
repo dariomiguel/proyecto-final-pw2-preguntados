@@ -76,7 +76,7 @@ class PartidaController{
             $_SESSION['puntaje_actual']++;
             $_SESSION['puntaje_final'] = $_SESSION['puntaje_actual'];
 
-            header("Location:/partida/jugar");
+            header("Location:/partida/verRuleta");
 
 
         }else{
