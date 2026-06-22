@@ -80,11 +80,9 @@ class PartidaModel
         $sql = "
         SELECT texto
         FROM respuestas
-        WHERE pregunta_id = (
-            SELECT pregunta_id
-            FROM respuestas
-            WHERE id = $idRespuesta)
+        WHERE pregunta_id = $idRespuesta
           AND es_correcta = 1
+        LIMIT 1
     ";
 
         $resultado = $this->database->query($sql);
@@ -93,7 +91,7 @@ class PartidaModel
             return "";
         }
 
-        return $resultado[0]['texto'];
+        return $resultado[0];
     }
 
     public function guardarPreguntaVista($usuarioId, $preguntaId)
@@ -196,5 +194,20 @@ class PartidaModel
         ";
 
         return $this->database->query($sql);
+    }
+
+    public function obtenerRespuestaCorrecta($idPregunta)
+    {
+        $sql = "
+        SELECT id
+        FROM respuestas
+        WHERE pregunta_id = $idPregunta
+          AND es_correcta = 1
+        LIMIT 1
+    ";
+
+        $resultado = $this->database->query($sql);
+
+        return $resultado[0];
     }
 }

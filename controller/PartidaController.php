@@ -23,6 +23,9 @@ class PartidaController{
         if(!isset($_SESSION['preguntas_vistas'])){
             $_SESSION['preguntas_vistas'] = [];
         }
+        foreach ($pregunta['respuestas'] as &$respuesta) {
+            $respuesta['pregunta_id'] = $pregunta['id'];
+        }
 
         $_SESSION['preguntas_vistas'] [] = $pregunta ['id'];
 
@@ -43,33 +46,41 @@ class PartidaController{
 
     public function validarRespuesta(){
 
-        $idRespuesta = $this->request->post("respuesta_id");
-        $respuesta = $this->model->obtenerRespuesta($idRespuesta);
+        $idPregunta = $_POST['id_pregunta'];
+        $idRespuesta = $_POST['respuesta_id'] ?? null;
 
-        if($respuesta['es_correcta']){
-            if(!isset($_SESSION['puntaje_actual']) ){
+        // respuesta correcta (ID)
+        $respuestaCorrecta = $this->model->obtenerRespuestaCorrecta($idPregunta);
+        $texto = $this->model->obtenerTextoRespuestaCorrecta($idPregunta);
+        $textoCorrecto = $texto['texto'];
+        $_SESSION['texto_correcta'] = $textoCorrecto;
+
+        // timeout o inválido
+        if ( $idRespuesta == -1 || $idRespuesta == '') {
+            $esCorrecta = false;
+        } else {
+            $esCorrecta = ($idRespuesta == $respuestaCorrecta['id']);
+        }
+
+        if ($esCorrecta) {
+            if (!isset($_SESSION['puntaje_actual'])) {
                 $_SESSION['puntaje_actual'] = 0;
             }
 
             $_SESSION['puntaje_actual']++;
             $_SESSION['puntaje_final'] = $_SESSION['puntaje_actual'];
 
-            header(
-                "Location:/partida/jugar"
-            );
+            header("Location:/partida/jugar");
 
-            exit();
 
         }else{
             $_SESSION['puntaje_final'] = $_SESSION['puntaje_actual'] ?? 0;
-            $_SESSION['texto_correcta'] = $this->model->obtenerTextoRespuestaCorrecta($idRespuesta);
 
             unset($_SESSION['puntaje_actual']);
 
             header("Location:/partida/terminada");
-
-            exit();
         }
+        exit();
     }
 
     public function terminada(){
@@ -78,9 +89,12 @@ class PartidaController{
         $data['sesionIniciada'] = isset($_SESSION["usuario"]);
         $data['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
         $data['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
-        $this->renderer->render("terminadaView", $data);
+
+
         unset($_SESSION['puntaje_final']);
         unset($_SESSION['texto_correcta']);
+
+        $this->renderer->render("terminadaView", $data);
     }
 
 }
