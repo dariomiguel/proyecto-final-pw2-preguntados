@@ -15,8 +15,10 @@ class Router
 
     public function dispatch($controller, $method)
     {
+        $controllerName = $controller;
         $controller = $this->getController($controller);
         $method     = $this->getMethod($controller, $method);
+        Auth::verificar($controllerName, $method);
         $controller->{$method}();
     }
 

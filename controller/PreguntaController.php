@@ -71,11 +71,11 @@ class PreguntaController
 
     public function pendientes(){
 
-        $usuario = $_SESSION['usuario'];
-        if ($usuario['rol'] === 'Jugador') {
-            Redirect::to('/lobby/ver');
-            return;
-        }
+//        $usuario = $_SESSION['usuario'];
+//        if ($usuario['rol'] === 'Jugador') {
+//            Redirect::to('/lobby/ver');
+//            return;
+//        }
 
        $preguntasPendientes = $this->model->getPreguntasPendientes();
        $this->view->render('preguntasPendientesView', [
@@ -89,11 +89,11 @@ class PreguntaController
 
     public function aprobar(){
 
-        $usuario = $_SESSION['usuario'];
-        if ($usuario['rol'] === 'Jugador') {
-            Redirect::to('/lobby/ver');
-            return;
-        }
+//        $usuario = $_SESSION['usuario'];
+//        if ($usuario['rol'] === 'Jugador') {
+//            Redirect::to('/lobby/ver');
+//            return;
+//        }
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'aprobada');
@@ -102,11 +102,11 @@ class PreguntaController
 
     public function rechazar(){
 
-        $usuario = $_SESSION['usuario'];
-        if ($usuario['rol'] === 'Jugador') {
-            Redirect::to('/lobby/ver');
-            return;
-        }
+//        $usuario = $_SESSION['usuario'];
+//        if ($usuario['rol'] === 'Jugador') {
+//            Redirect::to('/lobby/ver');
+//            return;
+//        }
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'baja');
