@@ -221,4 +221,37 @@ class PartidaModel
 
         return $resultado[0]['total'] > 0;
     }
+
+
+    public function obtenerPreguntaPorId($preguntaId)
+    {
+        $sql = "
+            SELECT
+                p.id,
+                p.enunciado,
+                c.nombre AS nombre_categoria,
+                c.color AS color_categoria,
+                c.color_secundario AS color_categoria_sec
+            FROM preguntas p
+            INNER JOIN categorias c ON p.categoria_id = c.id
+            WHERE p.id = $preguntaId
+            AND p.estado = 'aprobada'
+            LIMIT 1
+        ";
+
+        $resultado = $this->database->query($sql);
+        return $resultado ? $resultado[0] : null;
+    }
+
+    public function obtenerRespuestasDePregunta($preguntaId)
+    {
+        $sql = "
+            SELECT id, texto, es_correcta
+            FROM respuestas
+            WHERE pregunta_id = $preguntaId
+            ORDER BY RAND()
+        ";
+
+        return $this->database->query($sql);
+    }
 }

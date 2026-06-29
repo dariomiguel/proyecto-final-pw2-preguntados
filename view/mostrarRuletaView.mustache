@@ -27,7 +27,8 @@
 
 </main>
 
-<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalDesc">
+<div id="modal" class="modal" role="dialog" aria-modal="true"
+     aria-labelledby="modalTitle" aria-describedby="modalDesc">
     <div class="modal-card">
         <h2 id="modalTitle">Resultado</h2>
         <p id="modalDesc">La ruleta se detuvo en:</p>
@@ -35,5 +36,14 @@
         <a id="closeModal" href="/partida/jugar" class="close-btn">Aceptar</a>
     </div>
 </div>
+<script>
+    window.RULETA_STATE = {
+        categoriaFijada:    {{#categoriaFijada}}true{{/categoriaFijada}}{{^categoriaFijada}}false{{/categoriaFijada}},
+        indiceRuleta:       {{#categoriaFijada}}{{indiceRuletaFijado}}{{/categoriaFijada}}{{^categoriaFijada}}null{{/categoriaFijada}},
+        nombreCategoria:    "{{#categoriaFijada}}{{nombreCategoriaFijada}}{{/categoriaFijada}}",
+    };
+</script>
 
 <script src="../public/js/mostrarRuleta.js"></script>
+</body>
+</html>
