@@ -71,6 +71,24 @@ class PreguntaModel
         unset($pregunta);
         return $preguntas;
     }
+    public function getPreguntasAprobadas() {
+
+        $sql = "SELECT p.id, p.enunciado, c.nombre AS categoria
+                FROM preguntas p
+                JOIN categorias c ON p.categoria_id = c.id
+                WHERE p.estado = 'aprobada'";
+
+       $preguntasAprobadas = $this->database->query("$sql");
+
+        foreach ($preguntasAprobadas as &$pregunta) {
+            $pregunta['respuestas'] = $this->database->query(
+                "SELECT texto, es_correcta FROM respuestas WHERE pregunta_id = ?",
+                [$pregunta['id']]
+            );
+        }
+        unset($pregunta);
+        return $preguntasAprobadas;
+    }
 
     public function cambiarEstadoPregunta($idPregunta, $estado) {
 
@@ -114,6 +132,7 @@ class PreguntaModel
             );
         }
     }
+
 
 
 

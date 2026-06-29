@@ -24,7 +24,8 @@ class PreguntaController
             'categorias'     => $categorias,
             'enviada'        => $enviada,
             'sesionIniciada' => isset($_SESSION['usuario']),
-            'esAdmin'        => ($_SESSION['usuario']['rol'] ?? '') === 'Administrador',
+            //'esAdmin'        => ($_SESSION['usuario']['rol'] ?? '') === 'Administrador' || 'Editor',
+            'esAdmin' => in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']),
             'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'] ?? '',
         ]);
     }
@@ -78,8 +79,10 @@ class PreguntaController
 //        }
 
        $preguntasPendientes = $this->model->getPreguntasPendientes();
+       $preguntasAprobadas = $this->model->getPreguntasAprobadas();
        $this->view->render('preguntasPendientesView', [
            'preguntas'      => $preguntasPendientes,
+           'aprobadas'      => $preguntasAprobadas,
            'sesionIniciada' => true,
            'esAdmin'        => true,
            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
@@ -101,12 +104,6 @@ class PreguntaController
     }
 
     public function rechazar(){
-
-//        $usuario = $_SESSION['usuario'];
-//        if ($usuario['rol'] === 'Jugador') {
-//            Redirect::to('/lobby/ver');
-//            return;
-//        }
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'baja');
