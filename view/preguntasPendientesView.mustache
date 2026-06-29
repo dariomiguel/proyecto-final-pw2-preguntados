@@ -36,5 +36,36 @@
         </div>
     {{/preguntas}}
 
+
+    <h2 class="mb-4">Preguntas aprobadas</h2>
+
+    {{^aprobadas}}
+        <div class="alert alert-info">No hay preguntas aprobadas.</div>
+    {{/aprobadas}}
+
+    {{#aprobadas}}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">{{enunciado}}</h5>
+                <p class="text-muted small mb-2">Categoría: {{categoria}} — Creada por: {{nombre_usuario}}</p>
+
+                <ul class="list-group list-group-flush mb-3">
+                    {{#respuestas}}
+                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
+                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
+                        </li>
+                    {{/respuestas}}
+                </ul>
+
+                <a href="/pregunta/editar?id={{id}}" class="btn btn-warning btn-sm">Editar</a>
+
+                <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button type="submit" class="btn btn-danger btn-sm">Dar de baja</button>
+                </form>
+            </div>
+        </div>
+    {{/aprobadas}}
+
 </div>
 {{>footer}}
