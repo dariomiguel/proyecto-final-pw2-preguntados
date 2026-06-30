@@ -8,7 +8,7 @@ class Configurator{
     }
 
     public function getLobbyController(){
-        return new LobbyController($this->getRenderer());
+        return new LobbyController($this->getUsuarioModel(), $this->getRenderer());
     }
 
     public function getPerfilController(){
@@ -62,7 +62,7 @@ class Configurator{
     }
 
     public function getPartidaController(){
-        return new PartidaController($this->getPartidaModel(), $this->getRenderer(), new Request());
+        return new PartidaController($this->getPartidaModel(),$this->getPreguntaModel(), $this->getRenderer(), new Request());
     }
 
     private function getPartidaModel(){

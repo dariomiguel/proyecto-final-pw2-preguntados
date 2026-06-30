@@ -16,13 +16,14 @@ class PreguntaController
         $this->request = $request;
     }
 
-    public function ver(){
+    public function ver()
+    {
         Log::info("PreguntaController::ver");
         $categorias = $this->model->getCategorias();
         $enviada = $this->request->get('enviada') === '1';
         $this->view->render('crearPreguntaView', [
-            'categorias'     => $categorias,
-            'enviada'        => $enviada,
+            'categorias' => $categorias,
+            'enviada' => $enviada,
             'sesionIniciada' => isset($_SESSION['usuario']),
             //'esAdmin'        => ($_SESSION['usuario']['rol'] ?? '') === 'Administrador' || 'Editor',
             'esAdmin' => in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']),
@@ -30,8 +31,9 @@ class PreguntaController
         ]);
     }
 
-    public function guardar(){
-        $enunciado    = $this->request->post('enunciado');
+    public function guardar()
+    {
+        $enunciado = $this->request->post('enunciado');
         $categoria_id = $this->request->post('categoria_id');
 
         $respuestas = [
@@ -44,18 +46,24 @@ class PreguntaController
         $correcta = $this->request->post('correcta');
         $respuestas[$correcta - 1]['es_correcta'] = 1;
 
-        $estado               = 'pendiente';
+        $estado = 'pendiente';
         $creado_por_usuario_id = $_SESSION['usuario']['id'];
 
         $errores = [];
         $datos = compact('enunciado', 'categoria_id', 'respuestas', 'estado', 'creado_por_usuario_id');
 
-        if(empty($enunciado)){$errores['enunciado'] = 'El campo enunciado es obligatorio';}
-        if(empty($categoria_id)){$errores['categoria_id'] = 'La categoria es obligatoria';}
+        if (empty($enunciado)) {
+            $errores['enunciado'] = 'El campo enunciado es obligatorio';
+        }
+        if (empty($categoria_id)) {
+            $errores['categoria_id'] = 'La categoria es obligatoria';
+        }
         foreach ($respuestas as $i => $r) {
             if (empty($r['texto'])) $errores['respuesta_' . ($i + 1)] = 'La respuesta es requerida.';
         }
-        if (empty($correcta)) {$errores['correcta'] = 'Debe marcar una respuesta correcta.';}
+        if (empty($correcta)) {
+            $errores['correcta'] = 'Debe marcar una respuesta correcta.';
+        }
 
         if (!empty($errores)) {
 
@@ -70,7 +78,8 @@ class PreguntaController
     }
 
 
-    public function pendientes(){
+    public function pendientes()
+    {
 
 //        $usuario = $_SESSION['usuario'];
 //        if ($usuario['rol'] === 'Jugador') {
@@ -78,19 +87,20 @@ class PreguntaController
 //            return;
 //        }
 
-       $preguntasPendientes = $this->model->getPreguntasPendientes();
-       $preguntasAprobadas = $this->model->getPreguntasAprobadas();
-       $this->view->render('preguntasPendientesView', [
-           'preguntas'      => $preguntasPendientes,
-           'aprobadas'      => $preguntasAprobadas,
-           'sesionIniciada' => true,
-           'esAdmin'        => true,
-           'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
-       ]);
+        $preguntasPendientes = $this->model->getPreguntasPendientes();
+        $preguntasAprobadas = $this->model->getPreguntasAprobadas();
+        $this->view->render('preguntasPendientesView', [
+            'preguntas' => $preguntasPendientes,
+            'aprobadas' => $preguntasAprobadas,
+            'sesionIniciada' => true,
+            'esAdmin' => true,
+            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
+        ]);
 
     }
 
-    public function aprobar(){
+    public function aprobar()
+    {
 
 //        $usuario = $_SESSION['usuario'];
 //        if ($usuario['rol'] === 'Jugador') {
@@ -103,14 +113,16 @@ class PreguntaController
         Redirect::to('/pregunta/pendientes');
     }
 
-    public function rechazar(){
+    public function rechazar()
+    {
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'baja');
         Redirect::to('/pregunta/pendientes');
     }
 
-    public function editar(){
+    public function editar()
+    {
         $idPreguntaAEditar = $this->request->get('id');
         $pregunta = $this->model->getPregunta($idPreguntaAEditar);
         $categorias = $this->model->getCategorias();
@@ -126,19 +138,20 @@ class PreguntaController
         unset($respuesta);
 
         $this->view->render('editarPreguntaView', [
-            'pregunta'       => $pregunta,
-            'categorias'     => $categorias,
+            'pregunta' => $pregunta,
+            'categorias' => $categorias,
             'sesionIniciada' => true,
-            'esAdmin'        => true,
+            'esAdmin' => true,
             'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
         ]);
     }
 
-    public function actualizar(){
+    public function actualizar()
+    {
         $errores = [];
 
         $idPregunta = $this->request->post('id');
-        $enunciado    = $this->request->post('enunciado');
+        $enunciado = $this->request->post('enunciado');
         $categoria_id = $this->request->post('categoria_id');
 
         $respuestas = [
@@ -156,8 +169,12 @@ class PreguntaController
             $respuestas[(int)$correctaRaw - 1]['es_correcta'] = 1;
         }
 
-        if (empty($enunciado))   { $errores['enunciado']    = 'El enunciado es obligatorio.'; }
-        if (empty($categoria_id)){ $errores['categoria_id'] = 'La categoría es obligatoria.'; }
+        if (empty($enunciado)) {
+            $errores['enunciado'] = 'El enunciado es obligatorio.';
+        }
+        if (empty($categoria_id)) {
+            $errores['categoria_id'] = 'La categoría es obligatoria.';
+        }
         foreach ($respuestas as $i => &$r) {
             $r['indice'] = $i + 1;
             if (empty($r['texto'])) {
@@ -180,21 +197,20 @@ class PreguntaController
 
             Log::warning("PreguntaController::actualizar - errores de validación");
             $this->view->render('editarPreguntaView', [
-                'errores'        => $errores,
-                'pregunta'       => $pregunta,
-                'categorias'     => $categorias,
+                'errores' => $errores,
+                'pregunta' => $pregunta,
+                'categorias' => $categorias,
                 'sesionIniciada' => true,
-                'esAdmin'        => true,
+                'esAdmin' => true,
                 'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
             ]);
             return;
         }
 
-        $correcta = (int) $correctaRaw;
+        $correcta = (int)$correctaRaw;
         $this->model->actualizar($idPregunta, $enunciado, $categoria_id, $respuestas);
         Redirect::to('/pregunta/pendientes');
     }
-
 
 
 }

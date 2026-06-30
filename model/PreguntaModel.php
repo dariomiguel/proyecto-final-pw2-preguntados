@@ -133,7 +133,35 @@ class PreguntaModel
         }
     }
 
+    public function calcularDificultad($preguntas){
+        $totalRespuestas = $preguntas['total_respuestas'];
+        $totalAciertos = $preguntas['total_aciertos'];
 
+        $dificultadPregunta = "media";
 
+        if($totalRespuestas > 0){
+            $porcetajeAciertos = ($totalAciertos / $totalRespuestas) * 100;
+
+            if($porcetajeAciertos > 70){
+                $dificultadPregunta = "fácil";
+            }elseif ($porcetajeAciertos < 30) {
+                $dificultadPregunta = "díficil";
+            }
+        }
+        $preguntas['dificultad'] = $dificultadPregunta;
+
+        return $preguntas;
+
+    }
+
+    public function actualizarEstadisticasPregunta($idPregunta, $esCorrecta){
+
+        $sql = "UPDATE preguntas
+                SET total_respuestas = total_respuestas + 1,
+                    total_aciertos = total_aciertos + ?
+                WHERE id = ? ";
+
+        return $this->database->execute($sql, [$esCorrecta, $idPregunta]);
+    }
 
 }
