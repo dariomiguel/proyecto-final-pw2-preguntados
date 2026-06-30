@@ -23,6 +23,8 @@ class PartidaModel
                 p.enunciado,
                 c.nombre AS nombre_categoria,
                 c.color AS color_categoria,
+                p.total_respuestas,
+                p.total_aciertos,
                 c.color_secundario AS color_categoria_sec
             FROM preguntas p
             INNER JOIN categorias c
@@ -115,6 +117,8 @@ class PartidaModel
         SELECT
             p.id,
             p.enunciado,
+            p.total_respuestas, 
+            p.total_aciertos,
             c.nombre AS nombre_categoria,
             c.color AS color_categoria,
             c.color_secundario AS color_categoria_sec
@@ -139,6 +143,8 @@ class PartidaModel
         SELECT
             p.id,
             p.enunciado,
+            p.total_respuestas, 
+            p.total_aciertos,
             c.nombre AS nombre_categoria,
             c.color AS color_categoria,
             c.color_secundario AS color_categoria_sec
@@ -231,6 +237,8 @@ class PartidaModel
                 p.enunciado,
                 c.nombre AS nombre_categoria,
                 c.color AS color_categoria,
+                p.total_respuestas, 
+                p.total_aciertos,
                 c.color_secundario AS color_categoria_sec
             FROM preguntas p
             INNER JOIN categorias c ON p.categoria_id = c.id

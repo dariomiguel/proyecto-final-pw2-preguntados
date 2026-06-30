@@ -121,7 +121,7 @@ class PerfilController
             $usuario['foto_perfil'] = 'default-user.webp';
         }
 
-        $partidas = $this->model->getPartidaPorUsuario($usuario["id"]);
+        $partidas = $this->model->getPartidasPorUsuario($usuario["id"]);
 
         $data = [
             "usuario" => $usuario,
