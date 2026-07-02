@@ -70,7 +70,8 @@ class PreguntaController
     }
 
 
-    public function pendientes(){
+    public function pendientes()
+    {
 
         $todasLasPreguntas = $this->model->getTodasLasPreguntas();
         $preguntasPendientes = $this->model->getPreguntasPendientes();
@@ -89,21 +90,24 @@ class PreguntaController
 
     }
 
-    public function aprobar(){
+    public function aprobar()
+    {
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'aprobada');
         Redirect::to('/pregunta/pendientes');
     }
 
-    public function rechazar(){
+    public function rechazar()
+    {
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'baja');
         Redirect::to('/pregunta/pendientes');
     }
 
-    public function editar(){
+    public function editar()
+    {
         $idPreguntaAEditar = $this->request->get('id');
         $pregunta = $this->model->getPregunta($idPreguntaAEditar);
         $categorias = $this->model->getCategorias();
@@ -119,19 +123,20 @@ class PreguntaController
         unset($respuesta);
 
         $this->view->render('editarPreguntaView', [
-            'pregunta'       => $pregunta,
-            'categorias'     => $categorias,
+            'pregunta' => $pregunta,
+            'categorias' => $categorias,
             'sesionIniciada' => true,
-            'esAdmin'        => true,
+            'esAdmin' => true,
             'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
         ]);
     }
 
-    public function actualizar(){
+    public function actualizar()
+    {
         $errores = [];
 
         $idPregunta = $this->request->post('id');
-        $enunciado    = $this->request->post('enunciado');
+        $enunciado = $this->request->post('enunciado');
         $categoria_id = $this->request->post('categoria_id');
 
         $respuestas = [
@@ -149,8 +154,12 @@ class PreguntaController
             $respuestas[(int)$correctaRaw - 1]['es_correcta'] = 1;
         }
 
-        if (empty($enunciado))   { $errores['enunciado']    = 'El enunciado es obligatorio.'; }
-        if (empty($categoria_id)){ $errores['categoria_id'] = 'La categoría es obligatoria.'; }
+        if (empty($enunciado)) {
+            $errores['enunciado'] = 'El enunciado es obligatorio.';
+        }
+        if (empty($categoria_id)) {
+            $errores['categoria_id'] = 'La categoría es obligatoria.';
+        }
         foreach ($respuestas as $i => &$r) {
             $r['indice'] = $i + 1;
             if (empty($r['texto'])) {
@@ -173,17 +182,17 @@ class PreguntaController
 
             Log::warning("PreguntaController::actualizar - errores de validación");
             $this->view->render('editarPreguntaView', [
-                'errores'        => $errores,
-                'pregunta'       => $pregunta,
-                'categorias'     => $categorias,
+                'errores' => $errores,
+                'pregunta' => $pregunta,
+                'categorias' => $categorias,
                 'sesionIniciada' => true,
-                'esAdmin'        => true,
+                'esAdmin' => true,
                 'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
             ]);
             return;
         }
 
-        $correcta = (int) $correctaRaw;
+        $correcta = (int)$correctaRaw;
         $this->model->actualizar($idPregunta, $enunciado, $categoria_id, $respuestas);
         Redirect::to('/pregunta/pendientes');
     }
@@ -203,6 +212,5 @@ class PreguntaController
         $this->model->quitarReporte($idPregunta);
         Redirect::to('/pregunta/pendientes');
     }
-
 
 }

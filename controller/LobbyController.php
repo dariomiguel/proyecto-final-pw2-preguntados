@@ -2,25 +2,44 @@
 
 class LobbyController{
 
+    private $model;
     private $renderer;
-    //private $model;
 
-    public function __construct($renderer){
+
+    public function __construct($model, $renderer){
+
+        $this->model = $model;
         $this->renderer = $renderer;
     }
 
     public function ver(){
+
+        if (!isset($_SESSION["usuario"])) {
+            $datos = [
+                'sesionIniciada' => false,
+                'esAdmin' => false,
+                'nombre_usuario' => '',
+                'puntaje_total' => 0,
+                'partidas' => [],
+            ];
+
+            $this->renderer->render('lobbyView', $datos);
+            return;
+        }
+
+        $idUsuario = ($_SESSION["usuario"]["id"]);
+
+        $perfil = $this->model->getPuntajePorUsuario($idUsuario);
+        $historialPartidas = $this->model->getPartidasPorUsuario($idUsuario);
+
         $datos = [
-            'sesionIniciada' => isset($_SESSION["usuario"]),
+            'sesionIniciada' => true,
             'esAdmin' => in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']),
-            'nombre_usuario' => $_SESSION["usuario"]["nombre_usuario"] ??  'user_test',
-            'puntaje_total' => '350',
-            'partidas' => [
-                ['id' => '101', 'resultado' => '15'],
-                ['id' => '102', 'resultado' => '8'],
-                ['id' => '102', 'resultado' => '8']
-            ]
+            'nombre_usuario' => $perfil['nombre_usuario'],
+            'puntaje_total' => $perfil['puntaje_total'],
+            'partidas' => $historialPartidas,
         ];
+
         $this->renderer->render('lobbyView', $datos);
     }
 }

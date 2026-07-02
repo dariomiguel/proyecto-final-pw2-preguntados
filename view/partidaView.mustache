@@ -15,6 +15,12 @@
                         Categoría: {{nombre_categoria}}
                     </div>
 
+                    <div class="mb-3">
+    <span class="badge bg-secondary text-capitalize px-3 py-1" style="font-size: 0.8rem;">
+        Dificultad: {{dificultad}}
+    </span>
+                    </div>
+
                     <!-- ⏱️ CRONÓMETRO -->
                     <div class="d-flex justify-content-center mb-3">
                         <div class="position-relative" style="width: 90px; height: 90px;">
@@ -104,7 +110,9 @@
         </div>
     </div>
 </main>
-
+<script>
+    window.TIMER_RESTANTE = {{timer_restante}};
+</script>
 <script src="../public/js/partidaView.js"></script>
 
 {{>footer}}
