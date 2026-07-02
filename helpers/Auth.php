@@ -13,6 +13,8 @@ class Auth
             'rechazar'   => ['Editor', 'Administrador'],
             'eliminar'   => ['Editor', 'Administrador'],
             'actualizar' => ['Editor', 'Administrador'],
+            'reportar'   => ['Jugador','Editor', 'Administrador'],
+
         ],
         'perfil' => [
             'ver'               => ['Editor', 'Administrador', 'Jugador'],

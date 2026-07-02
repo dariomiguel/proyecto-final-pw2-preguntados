@@ -72,17 +72,16 @@ class PreguntaController
 
     public function pendientes(){
 
-//        $usuario = $_SESSION['usuario'];
-//        if ($usuario['rol'] === 'Jugador') {
-//            Redirect::to('/lobby/ver');
-//            return;
-//        }
+        $todasLasPreguntas = $this->model->getTodasLasPreguntas();
+        $preguntasPendientes = $this->model->getPreguntasPendientes();
+        $preguntasAprobadas = $this->model->getPreguntasAprobadas();
+        $preguntasReportadas = $this->model->getPreguntasReportadas();
 
-       $preguntasPendientes = $this->model->getPreguntasPendientes();
-       $preguntasAprobadas = $this->model->getPreguntasAprobadas();
        $this->view->render('preguntasPendientesView', [
-           'preguntas'      => $preguntasPendientes,
+           'todasLasPreguntas' => $todasLasPreguntas,
+           'pendientes'      => $preguntasPendientes,
            'aprobadas'      => $preguntasAprobadas,
+           'reportadas'    => $preguntasReportadas,
            'sesionIniciada' => true,
            'esAdmin'        => true,
            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
@@ -91,12 +90,6 @@ class PreguntaController
     }
 
     public function aprobar(){
-
-//        $usuario = $_SESSION['usuario'];
-//        if ($usuario['rol'] === 'Jugador') {
-//            Redirect::to('/lobby/ver');
-//            return;
-//        }
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'aprobada');
@@ -195,6 +188,21 @@ class PreguntaController
         Redirect::to('/pregunta/pendientes');
     }
 
+    public function reportar()
+    {
+        $idUsuario = $_SESSION['usuario']['id'];
+        $idPregunta = $this->request->post('pregunta_id');
+        $motivo = trim($this->request->post('motivo'));
+        $this->model->reportar($idPregunta, $idUsuario,  $motivo);
+        Redirect::to('/partida/verRuleta');
+    }
+
+    public function quitarReporte(){
+
+        $idPregunta = $this->request->get('id');
+        $this->model->quitarReporte($idPregunta);
+        Redirect::to('/pregunta/pendientes');
+    }
 
 
 }

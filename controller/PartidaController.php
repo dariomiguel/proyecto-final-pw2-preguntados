@@ -22,7 +22,7 @@ class PartidaController{
         $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario, $id_categoria);
 
         $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
-        $pregunta['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
+        $pregunta['esAdmin'] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
         $pregunta['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
         $pregunta['yaVistaTodas'] = false;
 
@@ -98,7 +98,7 @@ class PartidaController{
         $data['puntaje_final'] = $_SESSION['puntaje_final'] ?? 0;
         $data['texto_correcta'] = $_SESSION['texto_correcta'] ?? "";
         $data['sesionIniciada'] = isset($_SESSION["usuario"]);
-        $data['esAdmin'] = ($_SESSION["usuario"]["rol"] ?? '' ) === 'Administrador';
+        $data['esAdmin'] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
         $data['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
 
 
