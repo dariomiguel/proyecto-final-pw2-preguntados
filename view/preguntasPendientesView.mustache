@@ -1,71 +1,185 @@
 {{>header}}
 <div class="container my-5">
-    <h2 class="mb-4">Preguntas pendientes de aprobación</h2>
+    <h2 class="mb-4">Panel de preguntas</h2>
 
-    {{^preguntas}}
-        <div class="alert alert-info">No hay preguntas pendientes.</div>
-    {{/preguntas}}
+    <div class="accordion" id="acordeonPreguntas">
 
-    {{#preguntas}}
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">{{enunciado}}</h5>
-                <p class="text-muted small mb-2">Categoría: {{categoria}} — Sugerida por: {{nombre_usuario}}</p>
-
-
-                <ul class="list-group list-group-flush mb-3">
-                    {{#respuestas}}
-                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
-                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
-                        </li>
-                    {{/respuestas}}
-                </ul>
-
-                <form action="/pregunta/aprobar" method="POST" class="d-inline">
-                    <input type="hidden" name="id" value="{{id}}">
-                    <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
-                </form>
-
-                <form action="/pregunta/rechazar" method="POST" class="d-inline">
-                    <input type="hidden" name="id" value="{{id}}">
-                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
-                </form>
-
-                <a href="/pregunta/editar?id={{id}}" class="btn btn-primary btn-sm">Editar</a>
+        <!-- TODAS -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#secTodas">
+                    Todas las preguntas
+                </button>
+            </h2>
+            <div id="secTodas" class="accordion-collapse collapse"
+                 data-bs-parent="#acordeonPreguntas">
+                <div class="accordion-body">
+                    {{^todasLasPreguntas}}
+                        <div class="alert alert-info">No hay preguntas.</div>
+                    {{/todasLasPreguntas}}
+                    {{#todasLasPreguntas}}
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{enunciado}}</h5>
+                                <p class="text-muted small mb-2">Categoría: {{categoria}} — Creada por: {{nombre_usuario}}</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                    {{#respuestas}}
+                                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
+                                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
+                                        </li>
+                                    {{/respuestas}}
+                                </ul>
+                                <a href="/pregunta/editar?id={{id}}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Dar de baja</button>
+                                </form>
+                            </div>
+                        </div>
+                    {{/todasLasPreguntas}}
+                </div>
             </div>
         </div>
-    {{/preguntas}}
 
-
-    <h2 class="mb-4">Preguntas aprobadas</h2>
-
-    {{^aprobadas}}
-        <div class="alert alert-info">No hay preguntas aprobadas.</div>
-    {{/aprobadas}}
-
-    {{#aprobadas}}
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">{{enunciado}}</h5>
-                <p class="text-muted small mb-2">Categoría: {{categoria}} — Creada por: {{nombre_usuario}}</p>
-
-                <ul class="list-group list-group-flush mb-3">
-                    {{#respuestas}}
-                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
-                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
-                        </li>
-                    {{/respuestas}}
-                </ul>
-
-                <a href="/pregunta/editar?id={{id}}" class="btn btn-warning btn-sm">Editar</a>
-
-                <form action="/pregunta/rechazar" method="POST" class="d-inline">
-                    <input type="hidden" name="id" value="{{id}}">
-                    <button type="submit" class="btn btn-danger btn-sm">Dar de baja</button>
-                </form>
+        <!-- PENDIENTES -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#secPendientes">
+                    Pendientes de aprobación
+                </button>
+            </h2>
+            <div id="secPendientes" class="accordion-collapse collapse"
+                 data-bs-parent="#acordeonPreguntas">
+                <div class="accordion-body">
+                    {{^pendientes}}
+                        <div class="alert alert-info">No hay preguntas pendientes.</div>
+                    {{/pendientes}}
+                    {{#pendientes}}
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{enunciado}}</h5>
+                                <p class="text-muted small mb-2">Categoría: {{categoria}} — Sugerida por: {{nombre_usuario}}</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                    {{#respuestas}}
+                                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
+                                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
+                                        </li>
+                                    {{/respuestas}}
+                                </ul>
+                                <form action="/pregunta/aprobar" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <button type="submit" class="btn btn-success btn-sm">Aprobar</button>
+                                </form>
+                                <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Rechazar</button>
+                                </form>
+                                <a href="/pregunta/editar?id={{id}}" class="btn btn-primary btn-sm">Editar</a>
+                            </div>
+                        </div>
+                    {{/pendientes}}
+                </div>
             </div>
         </div>
-    {{/aprobadas}}
 
+        <!-- APROBADAS -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#secAprobadas">
+                    Aprobadas
+                </button>
+            </h2>
+            <div id="secAprobadas" class="accordion-collapse collapse"
+                 data-bs-parent="#acordeonPreguntas">
+                <div class="accordion-body">
+                    {{^aprobadas}}
+                        <div class="alert alert-info">No hay preguntas aprobadas.</div>
+                    {{/aprobadas}}
+                    {{#aprobadas}}
+                        <div class="card mb-3 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{enunciado}}</h5>
+                                <p class="text-muted small mb-2">Categoría: {{categoria}} — Creada por: {{nombre_usuario}}</p>
+                                <ul class="list-group list-group-flush mb-3">
+                                    {{#respuestas}}
+                                        <li class="list-group-item {{#es_correcta}}list-group-item-success{{/es_correcta}}">
+                                            {{texto}} {{#es_correcta}}<span class="badge bg-success">Correcta</span>{{/es_correcta}}
+                                        </li>
+                                    {{/respuestas}}
+                                </ul>
+                                <a href="/pregunta/editar?id={{id}}" class="btn btn-warning btn-sm">Editar</a>
+                                <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="{{id}}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Dar de baja</button>
+                                </form>
+                            </div>
+                        </div>
+                    {{/aprobadas}}
+                </div>
+            </div>
+        </div>
+
+        <!-- REPORTADAS -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#secReportadas">
+                    Reportadas
+                </button>
+            </h2>
+            <div id="secReportadas" class="accordion-collapse collapse"
+                 data-bs-parent="#acordeonPreguntas">
+                <div class="accordion-body p-0">
+                    <table class="table table-bordered mb-0">
+                        <thead class="table-danger">
+                        <tr>
+                            <th>Enunciado</th>
+                            <th>Categoría</th>
+                            <th>Reportes</th>
+                            <th>Motivos</th>
+                            <th>Acciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{#reportadas}}
+                            <tr>
+                                <td>{{enunciado}}</td>
+                                <td>{{categoria_nombre}}</td>
+                                <td><span class="badge bg-danger">{{cant_reportes}}</span></td>
+                                <td>
+                                    <ul class="mb-0 ps-3">
+                                        {{#lista_motivos}}
+                                            <li>{{motivo}}</li>
+                                        {{/lista_motivos}}
+                                        {{^lista_motivos}}
+                                            <li class="text-muted">Sin motivo registrado</li>
+                                        {{/lista_motivos}}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <a href="/pregunta/quitarReporte?id={{id}}"
+                                    class="btn btn-warning btn-sm">Quitar reporte</a>
+                                    <form action="/pregunta/rechazar" method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="{{id}}">
+                                        <button type="submit" class="btn btn-danger btn-sm">Dar de baja</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {{/reportadas}}
+                        {{^reportadas}}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Sin preguntas reportadas</td>
+                            </tr>
+                        {{/reportadas}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 {{>footer}}

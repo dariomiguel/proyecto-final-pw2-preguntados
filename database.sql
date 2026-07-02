@@ -302,3 +302,6 @@ VALUES
 ALTER TABLE usuarios
     ADD COLUMN latitud DECIMAL(10,8) NULL,
     ADD COLUMN longitud DECIMAL(11,8) NULL;
+-- alter para adicion de col reportes
+ALTER TABLE preguntas
+    ADD COLUMN cant_reportes INT DEFAULT 0 NOT NULL;

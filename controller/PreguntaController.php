@@ -16,14 +16,13 @@ class PreguntaController
         $this->request = $request;
     }
 
-    public function ver()
-    {
+    public function ver(){
         Log::info("PreguntaController::ver");
         $categorias = $this->model->getCategorias();
         $enviada = $this->request->get('enviada') === '1';
         $this->view->render('crearPreguntaView', [
-            'categorias' => $categorias,
-            'enviada' => $enviada,
+            'categorias'     => $categorias,
+            'enviada'        => $enviada,
             'sesionIniciada' => isset($_SESSION['usuario']),
             //'esAdmin'        => ($_SESSION['usuario']['rol'] ?? '') === 'Administrador' || 'Editor',
             'esAdmin' => in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']),
@@ -31,9 +30,8 @@ class PreguntaController
         ]);
     }
 
-    public function guardar()
-    {
-        $enunciado = $this->request->post('enunciado');
+    public function guardar(){
+        $enunciado    = $this->request->post('enunciado');
         $categoria_id = $this->request->post('categoria_id');
 
         $respuestas = [
@@ -46,24 +44,18 @@ class PreguntaController
         $correcta = $this->request->post('correcta');
         $respuestas[$correcta - 1]['es_correcta'] = 1;
 
-        $estado = 'pendiente';
+        $estado               = 'pendiente';
         $creado_por_usuario_id = $_SESSION['usuario']['id'];
 
         $errores = [];
         $datos = compact('enunciado', 'categoria_id', 'respuestas', 'estado', 'creado_por_usuario_id');
 
-        if (empty($enunciado)) {
-            $errores['enunciado'] = 'El campo enunciado es obligatorio';
-        }
-        if (empty($categoria_id)) {
-            $errores['categoria_id'] = 'La categoria es obligatoria';
-        }
+        if(empty($enunciado)){$errores['enunciado'] = 'El campo enunciado es obligatorio';}
+        if(empty($categoria_id)){$errores['categoria_id'] = 'La categoria es obligatoria';}
         foreach ($respuestas as $i => $r) {
             if (empty($r['texto'])) $errores['respuesta_' . ($i + 1)] = 'La respuesta es requerida.';
         }
-        if (empty($correcta)) {
-            $errores['correcta'] = 'Debe marcar una respuesta correcta.';
-        }
+        if (empty($correcta)) {$errores['correcta'] = 'Debe marcar una respuesta correcta.';}
 
         if (!empty($errores)) {
 
@@ -81,32 +73,25 @@ class PreguntaController
     public function pendientes()
     {
 
-//        $usuario = $_SESSION['usuario'];
-//        if ($usuario['rol'] === 'Jugador') {
-//            Redirect::to('/lobby/ver');
-//            return;
-//        }
-
+        $todasLasPreguntas = $this->model->getTodasLasPreguntas();
         $preguntasPendientes = $this->model->getPreguntasPendientes();
         $preguntasAprobadas = $this->model->getPreguntasAprobadas();
-        $this->view->render('preguntasPendientesView', [
-            'preguntas' => $preguntasPendientes,
-            'aprobadas' => $preguntasAprobadas,
-            'sesionIniciada' => true,
-            'esAdmin' => true,
-            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
-        ]);
+        $preguntasReportadas = $this->model->getPreguntasReportadas();
+
+       $this->view->render('preguntasPendientesView', [
+           'todasLasPreguntas' => $todasLasPreguntas,
+           'pendientes'      => $preguntasPendientes,
+           'aprobadas'      => $preguntasAprobadas,
+           'reportadas'    => $preguntasReportadas,
+           'sesionIniciada' => true,
+           'esAdmin'        => true,
+           'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'],
+       ]);
 
     }
 
     public function aprobar()
     {
-
-//        $usuario = $_SESSION['usuario'];
-//        if ($usuario['rol'] === 'Jugador') {
-//            Redirect::to('/lobby/ver');
-//            return;
-//        }
 
         $idPregunta = $this->request->post('id');
         $this->model->cambiarEstadoPregunta($idPregunta, 'aprobada');
@@ -212,5 +197,20 @@ class PreguntaController
         Redirect::to('/pregunta/pendientes');
     }
 
+    public function reportar()
+    {
+        $idUsuario = $_SESSION['usuario']['id'];
+        $idPregunta = $this->request->post('pregunta_id');
+        $motivo = trim($this->request->post('motivo'));
+        $this->model->reportar($idPregunta, $idUsuario,  $motivo);
+        Redirect::to('/partida/verRuleta');
+    }
+
+    public function quitarReporte(){
+
+        $idPregunta = $this->request->get('id');
+        $this->model->quitarReporte($idPregunta);
+        Redirect::to('/pregunta/pendientes');
+    }
 
 }

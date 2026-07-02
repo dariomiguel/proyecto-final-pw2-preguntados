@@ -54,6 +54,24 @@ class PreguntaModel
         return $this->database->query("SELECT id, nombre FROM categorias ORDER BY nombre");
     }
 
+    public function getTodasLasPreguntas()
+    {
+        $sql = "SELECT p.id, p.enunciado, c.nombre AS categoria
+                FROM preguntas p
+                JOIN categorias c ON p.categoria_id = c.id";
+
+        $todasLasPreguntas = $this->database->query("$sql");
+
+        foreach ($todasLasPreguntas as &$pregunta) {
+            $pregunta['respuestas'] = $this->database->query(
+                "SELECT texto, es_correcta FROM respuestas WHERE pregunta_id = ?",
+                [$pregunta['id']]
+            );
+        }
+        unset($pregunta);
+        return $todasLasPreguntas;
+    }
+
     public function getPreguntasPendientes() {
         $sql = "SELECT p.id, p.enunciado, c.nombre AS categoria, u.nombre_usuario
                 FROM preguntas p
@@ -88,6 +106,31 @@ class PreguntaModel
         }
         unset($pregunta);
         return $preguntasAprobadas;
+    }
+
+    public function getPreguntasReportadas()
+    {
+        $sql = "SELECT p.id, p.enunciado, p.cant_reportes, p.estado,
+                   c.nombre AS categoria_nombre,
+                   GROUP_CONCAT(r.motivo SEPARATOR '||') AS motivos
+            FROM preguntas p
+            JOIN categorias c ON p.categoria_id = c.id
+            LEFT JOIN reportes r ON r.pregunta_id = p.id
+            WHERE p.cant_reportes > 0 AND p.estado = 'aprobada'
+            GROUP BY p.id, p.enunciado, p.cant_reportes, p.estado, c.nombre
+            ORDER BY p.cant_reportes DESC";
+
+        $preguntas = $this->database->query($sql);
+
+        foreach ($preguntas as &$pregunta) {
+            $pregunta['lista_motivos'] = array_map(
+                fn($motivo) => ['motivo' => $motivo],
+                array_filter(explode('||', $pregunta['motivos'] ?? ''))
+            );
+        }
+        unset($pregunta);
+
+        return $preguntas;
     }
 
     public function cambiarEstadoPregunta($idPregunta, $estado) {
@@ -132,6 +175,25 @@ class PreguntaModel
             );
         }
     }
+
+    public function reportar($idPregunta, $idUsuario , $motivo)
+    {
+
+        $sql = "INSERT INTO reportes (pregunta_id, usuario_id, motivo) VALUES ( ? ,? ,? )";
+        $this->database->execute($sql, [$idPregunta, $idUsuario, $motivo]);
+
+        $sqlIncrementarContadorReportes = "UPDATE preguntas SET cant_reportes = cant_reportes + 1 WHERE id = ?";
+        $this->database->execute($sqlIncrementarContadorReportes, [$idPregunta]);
+
+
+    }
+
+    public function quitarReporte($id) {
+        $this->database->execute("UPDATE preguntas SET cant_reportes = 0 WHERE id = ?", [$id]);
+        return $this->database->execute("DELETE FROM reportes WHERE pregunta_id = ?", [$id]);
+    }
+
+
 
     public function calcularDificultad($preguntas){
         $totalRespuestas = $preguntas['total_respuestas'];
