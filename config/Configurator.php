@@ -81,4 +81,13 @@ class Configurator{
         return new RankingController($this->getUsuarioModel(), $this->getRenderer(), new Request());
     }
 
+    public function getAdminController(){
+        return new AdminController($this->getEstadisticaModel(), $this->getRenderer(), new Request());
+    }
+
+    public function getEstadisticaModel()
+    {
+        return new EstadisticaModel($this->getDatabase());
+    }
+
 }

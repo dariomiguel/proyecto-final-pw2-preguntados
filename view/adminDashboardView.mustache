@@ -1,0 +1,192 @@
+{{>header}}
+
+<link rel="stylesheet" href="/public/css/admin-style.css">
+
+<div class="container py-5">
+
+    <div class="text-center mb-4">
+        <h1 class="display-5 fw-bold">Panel de Administración</h1>
+        <p class="lead">Estadísticas del juego</p>
+    </div>
+
+    <!-- Filtro por período -->
+    <form method="GET" action="/admin/ver" class="row g-2 justify-content-center align-items-center mb-4 no-imprimir">
+        <div class="col-auto">
+            <label for="filtro" class="col-form-label fw-bold">Período:</label>
+        </div>
+        <div class="col-auto">
+            <select name="filtro" id="filtro" class="form-select" onchange="this.form.submit()">
+                <option value="todo" {{#filtro_todo}}selected{{/filtro_todo}}>Histórico</option>
+                <option value="dia" {{#filtro_dia}}selected{{/filtro_dia}}>Último día</option>
+                <option value="semana" {{#filtro_semana}}selected{{/filtro_semana}}>Última semana</option>
+                <option value="mes" {{#filtro_mes}}selected{{/filtro_mes}}>Último mes</option>
+                <option value="anio" {{#filtro_anio}}selected{{/filtro_anio}}>Último año</option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="button" class="btn btn-outline-dark" onclick="window.print()">
+                <i class="bi bi-printer"></i> Imprimir reporte
+            </button>
+        </div>
+    </form>
+
+    <!-- Tarjetas con totales -->
+    <div class="row g-3 mb-5 justify-content-center">
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card shadow-sm border-0 text-center h-100">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">{{cantidad_jugadores}}</div>
+                    <div class="small text-secondary">Jugadores</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card shadow-sm border-0 text-center h-100">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">{{cantidad_partidas}}</div>
+                    <div class="small text-secondary">Partidas jugadas</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card shadow-sm border-0 text-center h-100">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">{{cantidad_preguntas}}</div>
+                    <div class="small text-secondary">Preguntas en el juego</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card shadow-sm border-0 text-center h-100">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">{{cantidad_preguntas_creadas}}</div>
+                    <div class="small text-secondary">Preguntas sugeridas</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-md-4 col-lg-2">
+            <div class="card shadow-sm border-0 text-center h-100">
+                <div class="card-body">
+                    <div class="fs-2 fw-bold text-primary">{{cantidad_usuarios_nuevos}}</div>
+                    <div class="small text-secondary">Usuarios nuevos</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Usuarios por país -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">Usuarios por país</h3>
+                    {{#usuarios_por_pais}}
+                    <div class="fila-barra">
+                        <span class="barra-etiqueta">{{etiqueta}}</span>
+                        <div class="barra-contenedor">
+                            <div class="barra" style="width: {{porcentaje}}%"></div>
+                        </div>
+                        <span class="barra-valor">{{cantidad}}</span>
+                    </div>
+                    {{/usuarios_por_pais}}
+                    <table class="table table-bordered table-sm mt-3 mb-0">
+                        <thead class="table-light"><tr><th>País</th><th>Usuarios</th></tr></thead>
+                        <tbody>
+                            {{#usuarios_por_pais}}
+                            <tr><td>{{etiqueta}}</td><td>{{cantidad}}</td></tr>
+                            {{/usuarios_por_pais}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuarios por sexo -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">Usuarios por sexo</h3>
+                    {{#usuarios_por_sexo}}
+                    <div class="fila-barra">
+                        <span class="barra-etiqueta">{{etiqueta}}</span>
+                        <div class="barra-contenedor">
+                            <div class="barra" style="width: {{porcentaje}}%"></div>
+                        </div>
+                        <span class="barra-valor">{{cantidad}}</span>
+                    </div>
+                    {{/usuarios_por_sexo}}
+                    <table class="table table-bordered table-sm mt-3 mb-0">
+                        <thead class="table-light"><tr><th>Sexo</th><th>Usuarios</th></tr></thead>
+                        <tbody>
+                            {{#usuarios_por_sexo}}
+                            <tr><td>{{etiqueta}}</td><td>{{cantidad}}</td></tr>
+                            {{/usuarios_por_sexo}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Usuarios por grupo de edad -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">Usuarios por grupo de edad</h3>
+                    {{#usuarios_por_edad}}
+                    <div class="fila-barra">
+                        <span class="barra-etiqueta">{{etiqueta}}</span>
+                        <div class="barra-contenedor">
+                            <div class="barra" style="width: {{porcentaje}}%"></div>
+                        </div>
+                        <span class="barra-valor">{{cantidad}}</span>
+                    </div>
+                    {{/usuarios_por_edad}}
+                    <table class="table table-bordered table-sm mt-3 mb-0">
+                        <thead class="table-light"><tr><th>Grupo</th><th>Usuarios</th></tr></thead>
+                        <tbody>
+                            {{#usuarios_por_edad}}
+                            <tr><td>{{etiqueta}}</td><td>{{cantidad}}</td></tr>
+                            {{/usuarios_por_edad}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- % de respuestas correctas por usuario -->
+        <div class="col-12 col-lg-6">
+            <div class="card shadow-lg border-0 h-100">
+                <div class="card-body p-4">
+                    <h3 class="h5 mb-4">Respuestas correctas por usuario</h3>
+                    <table class="table table-bordered table-sm mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Respondidas</th>
+                                <th>Correctas</th>
+                                <th>% correctas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#correctas_por_usuario}}
+                            <tr>
+                                <td>{{nombre_usuario}}</td>
+                                <td>{{respondidas}}</td>
+                                <td>{{correctas}}</td>
+                                <td>{{porcentaje}}%</td>
+                            </tr>
+                            {{/correctas_por_usuario}}
+                            {{^correctas_por_usuario}}
+                            <tr><td colspan="4" class="text-center text-secondary">Sin partidas en este período</td></tr>
+                            {{/correctas_por_usuario}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{>footer}}

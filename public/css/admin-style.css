@@ -1,0 +1,65 @@
+/* ===== Gráficos de barras del panel admin ===== */
+.fila-barra {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}
+
+.barra-etiqueta {
+    width: 130px;
+    font-size: 0.85rem;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.barra-contenedor {
+    flex: 1;
+    background: #e9ecef;
+    border-radius: 6px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.barra {
+    background: #0d6efd; /* primary de Bootstrap, consistente con el sitio */
+    height: 100%;
+    border-radius: 6px;
+    min-width: 2px;
+    transition: width 0.6s ease; /* solo mejora de UX */
+}
+
+.barra-valor {
+    width: 40px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .barra-etiqueta {
+        width: 90px;
+    }
+}
+
+/* ===== Impresión: oculta menú y filtros, imprime tarjetas y tablas ===== */
+@media print {
+    .no-imprimir,
+    header,
+    nav {
+        display: none !important;
+    }
+
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+    }
+
+    .barra {
+        background: #999 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
