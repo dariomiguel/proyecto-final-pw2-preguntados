@@ -4,7 +4,13 @@
         <div class="col-lg-7">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <h2 class="card-title mb-4 text-center">Sugerir pregunta</h2>
+
+                    {{#esAdmin}}
+                        <h2 class="card-title mb-4 text-center">Crear pregunta</h2>
+                    {{/esAdmin}}
+                    {{^esAdmin}}
+                        <h2 class="card-title mb-4 text-center">Sugerir pregunta</h2>
+                    {{/esAdmin}}
 
                     {{#enviada}}
                     <div class="alert alert-success" role="alert">
@@ -74,7 +80,12 @@
                             </div>
 
                             <div class="col-12 mt-2">
-                                <button type="submit" class="btn btn-primary w-100">Enviar sugerencia</button>
+                                {{#esAdmin}}
+                                    <button type="submit" class="btn btn-primary w-100">Crear pregunta</button>
+                                {{/esAdmin}}
+                                {{^esAdmin}}
+                                    <button type="submit" class="btn btn-primary w-100">Enviar sugerencia</button>
+                                {{/esAdmin}}
                             </div>
 
                         </div>

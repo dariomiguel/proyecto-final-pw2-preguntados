@@ -77,6 +77,15 @@ class Configurator{
         return new PreguntaModel($this->getDatabase());
     }
 
+    private function getCategoriaController(){
+        return new CategoriaController($this->getCategoriaModel(), $this->getRenderer(), new Request());
+    }
+
+    private function getCategoriaModel()
+    {
+        return new CategoriaModel($this->getDatabase());
+    }
+
     public function getRankingController(){
         return new RankingController($this->getUsuarioModel(), $this->getRenderer(), new Request());
     }
@@ -89,5 +98,7 @@ class Configurator{
     {
         return new EstadisticaModel($this->getDatabase());
     }
+
+
 
 }

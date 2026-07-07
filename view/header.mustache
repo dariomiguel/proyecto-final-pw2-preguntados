@@ -34,21 +34,25 @@
                     {{/sesionIniciada}}
                     {{#sesionIniciada}}
                         {{#esAdmin}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/ver">
-                                <i class="bi bi-bar-chart-fill"></i> Estadísticas
-                            </a>
-                        </li>
-                        {{/esAdmin}}
-                        {{#esAdmin}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/pregunta/pendientes">Panel de preguntas</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin/ver">
+                                    <i class="bi bi-bar-chart-fill"></i> Estadísticas
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/pregunta/pendientes">Panel de preguntas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/pregunta/ver">Crear Pregunta</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/categoria/listar">Categorías</a>
+                            </li>
                         {{/esAdmin}}
                         {{^esAdmin}}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/pregunta/ver">Sugerir Pregunta</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/pregunta/ver">Sugerir Pregunta</a>
+                            </li>
                         {{/esAdmin}}
                         <li class="nav-item d-none d-lg-block">
                             <span class="nav-link text-secondary">|</span>
