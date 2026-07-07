@@ -22,8 +22,11 @@ class Auth
             'actualizarPerfil'  => ['Editor', 'Administrador', 'Jugador'],
             'verPublico'        => ['Editor', 'Administrador', 'Jugador'],
         ],
-
-
+        'categoria' => [
+            'listar'               => ['Editor', 'Administrador'],
+            'guardar'              => ['Editor', 'Administrador'],
+            'baja'                 => ['Editor', 'Administrador'],
+        ]
 
     ];
 

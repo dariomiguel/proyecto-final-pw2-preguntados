@@ -1,0 +1,78 @@
+{{> header}}
+<div class="container mt-4">
+
+    {{#creada}}
+        <div class="alert alert-success" role="alert">
+            Se creo la categoria correctamente!
+        </div>
+    {{/creada}}
+
+    {{#eliminada}}
+        <div class="alert alert-danger" role="alert">
+            Se elimino la categoria correctamente!
+        </div>
+    {{/eliminada}}
+
+    {{#errores}}
+        <div class="alert alert-danger" role="alert">
+            {{#nombre}}<p>{{nombre}}</p>{{/nombre}}
+            {{#color}}<p>{{color}}</p>{{/color}}
+            {{#color_secundario}}<p>{{color_secundario}}</p>{{/color_secundario}}
+        </div>
+    {{/errores}}
+
+    <h2>Categorías</h2>
+
+    <div class="card mb-4">
+        <div class="card-header">Nueva categoría</div>
+        <div class="card-body">
+            <form action="/categoria/guardar" method="POST">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" name="nombre" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Color principal</label>
+                        <input type="color" name="color" class="form-control form-control-color w-100" value="#3498DB">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Color secundario</label>
+                        <input type="color" name="color_secundario" class="form-control form-control-color w-100" value="#62AFE3">
+                    </div>
+                    <div class="col-md-1">
+                        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Color principal</th>
+            <th>Color secundario</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#categorias}}
+            <tr>
+                <td>{{id}}</td>
+                <td>{{nombre}}</td>
+                <td><span class="badge" style="background-color:{{color}}">{{color}}</span></td>
+                <td><span class="badge" style="background-color:{{color_secundario}}">{{color_secundario}}</span></td>
+                <td>
+                    <a href="/categoria/baja?id={{id}}"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('¿Eliminar categoría?')">Eliminar</a>
+                </td>
+            </tr>
+        {{/categorias}}
+        </tbody>
+    </table>
+</div>
+{{> footer}}

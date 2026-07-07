@@ -24,7 +24,6 @@ class PreguntaController
             'categorias'     => $categorias,
             'enviada'        => $enviada,
             'sesionIniciada' => isset($_SESSION['usuario']),
-            //'esAdmin'        => ($_SESSION['usuario']['rol'] ?? '') === 'Administrador' || 'Editor',
             'esAdmin' => in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']),
             'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'] ?? '',
         ]);
@@ -44,7 +43,8 @@ class PreguntaController
         $correcta = $this->request->post('correcta');
         $respuestas[$correcta - 1]['es_correcta'] = 1;
 
-        $estado               = 'pendiente';
+        $rol = $_SESSION['usuario']['rol'];
+        $estado = ($rol == 'Jugador') ? 'pendiente' : 'aprobada';
         $creado_por_usuario_id = $_SESSION['usuario']['id'];
 
         $errores = [];
@@ -66,7 +66,8 @@ class PreguntaController
         }
 
         $this->model->crear($datos);
-        Redirect::to('/pregunta/ver?enviada=1');
+        $redirect = ($rol === 'Jugador') ? '/pregunta/ver?enviada=1' : '/pregunta/pendientes';
+        Redirect::to($redirect);
     }
 
 
