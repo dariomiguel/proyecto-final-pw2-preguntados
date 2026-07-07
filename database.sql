@@ -305,3 +305,14 @@ ALTER TABLE usuarios
 -- alter para adicion de col reportes
 ALTER TABLE preguntas
     ADD COLUMN cant_reportes INT DEFAULT 0 NOT NULL;
+
+-- Para filtrar usuarios nuevos / por país / sexo / edad por período
+ALTER TABLE usuarios
+    ADD COLUMN fecha_registro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- Para filtrar preguntas por período
+ALTER TABLE preguntas
+    ADD COLUMN fecha_creacion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- Nota: los usuarios/preguntas ya existentes quedarán con la fecha
+-- de ejecución de este script.
