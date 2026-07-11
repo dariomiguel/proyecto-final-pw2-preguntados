@@ -7,11 +7,11 @@
     <div class="container my-5 d-flex justify-content-center">
         <div class="row w-100 justify-content-center">
             <div class="col-12 col-md-8 col-lg-6">
-                <div class="card shadow-lg p-4 text-center border-0 text-dark"
+                <div class="card shadow-lg p-4 text-center border-0 text-white"
                      id="contenedor-trivia"
                      style="background-color: {{color_categoria}}; border-radius: 20px;">
 
-                    <div class="mb-2 text-uppercase fw-bold small text-dark opacity-75">
+                    <div class="mb-2 text-uppercase fw-bold small text-white opacity-75">
                         Categoría: {{nombre_categoria}}
                     </div>
 
@@ -29,7 +29,7 @@
                                  style="transform: rotate(-90deg);">
                                 <circle cx="45" cy="45" r="38"
                                         fill="none"
-                                        stroke="rgba(0,0,0,0.12)"
+                                        stroke="rgba(255,255,255,0.15)"
                                         stroke-width="6"/>
                                 <circle id="timer-ring"
                                         cx="45" cy="45" r="38"
@@ -44,16 +44,16 @@
                             <div class="position-absolute top-0 start-0 w-100 h-100
                                         d-flex flex-column align-items-center justify-content-center">
                                 <span id="timer-display"
-                                      class="fw-bold text-dark"
+                                      class="fw-bold text-white"
                                       style="font-size: 1.6rem; line-height: 1;">15</span>
-                                <span class="text-dark opacity-50"
+                                <span class="text-white opacity-50"
                                       style="font-size: 0.65rem;">seg</span>
                             </div>
                         </div>
                     </div>
                     <!-- /CRONÓMETRO -->
 
-                    <h2 class="h3 fw-bold mb-4 text-dark">
+                    <h2 class="h3 fw-bold mb-4 text-white">
                         {{enunciado}}
                     </h2>
 
@@ -84,7 +84,7 @@
                     <!-- Modal -->
                     <div class="modal fade" id="modalReportar" tabindex="-1">
                         <div class="modal-dialog">
-                            <div class="modal-content">
+                            <div class="modal-content text-dark">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Reportar pregunta</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
