@@ -103,6 +103,7 @@ class RegistroController
         $datos['hash_validacion'] = $hash;
 
         $this->model->crear($datos);
+        Mailer::enviarVerificacion($mail, $nombre, $hash);
         Log::info("RegistroController::procesar - usuario creado: $mail");
 
         Redirect::to('/registro/exito?token=' . $hash);
