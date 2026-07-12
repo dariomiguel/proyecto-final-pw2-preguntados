@@ -226,4 +226,13 @@ class PreguntaModel
         return $this->database->execute($sql, [$esCorrecta, $idPregunta]);
     }
 
+    public function obtenerCategorias()
+    {
+        return $this->database->query(
+            "SELECT id, nombre, color, color_secundario
+            FROM categorias
+            ORDER BY id"
+        );
+    }
+
 }

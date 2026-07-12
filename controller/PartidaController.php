@@ -9,15 +9,13 @@ class PartidaController
     private $renderer;
     private $request;
     private const TIEMPO_LIMITE = 15;
-    private const CATEGORIAS = [
-        1 => "Geografía",
-        2 => "Historia",
-        3 => "Arte",
-        4 => "Ciencia",
-        5 => "Entretenimiento",
-        6 => "Deportes",
-        7 => "Programación",
-    ];
+    /*
+     * NOTA: se eliminó la constante CATEGORIAS hardcodeada.
+     * Ahora las categorías salen de la tabla `categorias` mediante
+     * $this->preguntaModel->obtenerCategorias() (ver INSTRUCCIONES.md),
+     * así agregar una categoría en la BD alcanza para que aparezca
+     * en la ruleta sin tocar código.
+     */
 
     public function __construct($model,$preguntaModel,$usuarioModel, $renderer, $request)
     {
@@ -28,34 +26,54 @@ class PartidaController
         $this->request = $request;
     }
 
+    /*
+     * Devuelve la posición (0..n-1) que ocupa la categoría $idCategoria
+     * dentro de la lista ordenada. Ese índice es el sector de la ruleta.
+     * Antes se usaba "id - 1", que se rompe si algún id no es consecutivo
+     * (por ejemplo, si se borra una categoría del medio).
+     */
+    private function indiceDeCategoria($categorias, $idCategoria)
+    {
+        foreach ($categorias as $indice => $categoria) {
+            if ((int)$categoria['id'] === (int)$idCategoria) {
+                return $indice;
+            }
+        }
+        return 0;
+    }
+
     public function girarRuleta()
     {
+        $categorias = $this->preguntaModel->obtenerCategorias();
+
+        // Si ya había una categoría fijada en la sesión, se devuelve esa
         if (isset($_SESSION["pregunta_activa_id"], $_SESSION["idCategoria"])) {
             $idCategoria = (int)$_SESSION["idCategoria"];
-            $nombreCategoria = self::CATEGORIAS[$idCategoria] ?? "Desconocida";
+            $indice = $this->indiceDeCategoria($categorias, $idCategoria);
 
             header("Content-Type: application/json; charset=utf-8");
             echo json_encode([
                 "idCategoria" => $idCategoria,
-                "nombreCategoria" => $nombreCategoria,
-                "indiceRuleta" => $idCategoria - 1,
+                "nombreCategoria" => $categorias[$indice]['nombre'] ?? "Desconocida",
+                "indiceRuleta" => $indice,
                 "bloqueada" => true,
             ]);
             exit();
         }
 
-        $idCategoria = array_rand(self::CATEGORIAS);
-        $nombreCategoria = self::CATEGORIAS[$idCategoria];
+        // Elección aleatoria DEL SERVIDOR sobre las categorías de la BD
+        $indice = array_rand($categorias);
+        $categoria = $categorias[$indice];
 
-        $_SESSION["idCategoria"] = $idCategoria;
+        $_SESSION["idCategoria"] = (int)$categoria['id'];
 
         unset($_SESSION["timer_inicio"]);
 
         header("Content-Type: application/json; charset=utf-8");
         echo json_encode([
-            "idCategoria" => $idCategoria,
-            "nombreCategoria" => $nombreCategoria,
-            "indiceRuleta" => $idCategoria - 1,
+            "idCategoria" => (int)$categoria['id'],
+            "nombreCategoria" => $categoria['nombre'],
+            "indiceRuleta" => $indice,
             "bloqueada" => false,
         ]);
         exit();
@@ -77,17 +95,6 @@ class PartidaController
         } else {
             $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario, $id_categoria, $nivelUsuario);
 
-        $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
-        $pregunta['esAdmin'] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
-        $pregunta['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
-        $pregunta['yaVistaTodas'] = false;
-
-        if(!isset($_SESSION['preguntas_vistas'])){
-            $_SESSION['preguntas_vistas'] = [];
-        }
-        foreach ($pregunta['respuestas'] as &$respuesta) {
-            $respuesta['pregunta_id'] = $pregunta['id'];
-        }
             if (!$pregunta) {
                 header("Location:/partida/verRuleta");
                 exit();
@@ -108,7 +115,7 @@ class PartidaController
         }
 
         $pregunta["sesionIniciada"] = isset($_SESSION["usuario"]);
-        $pregunta["esAdmin"] = ($_SESSION["usuario"]["rol"] ?? "") === "Administrador";
+        $pregunta["esAdmin"] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
         $pregunta["nombre_usuario"] = $_SESSION["usuario"]["nombre_usuario"] ?? "user_test";
         $pregunta["yaVistaTodas"] = false;
 
@@ -211,14 +218,22 @@ class PartidaController
 
     public function verRuleta()
     {
-        $data = [];
+        $categorias = $this->preguntaModel->obtenerCategorias();
+
+        // JSON con las categorías de la BD para que el JS arme la ruleta
+        $data['categorias_json'] = json_encode(
+            $categorias,
+            JSON_UNESCAPED_UNICODE // conserva tildes: "Programación"
+        );
 
         if (isset($_SESSION["idCategoria"])) {
             $idCategoria = (int)$_SESSION["idCategoria"];
+            $indice = $this->indiceDeCategoria($categorias, $idCategoria);
+
             $data["categoriaFijada"] = true;
             $data["idCategoriaFijada"] = $idCategoria;
-            $data["indiceRuletaFijado"] = $idCategoria - 1;
-            $data["nombreCategoriaFijada"] = self::CATEGORIAS[$idCategoria] ?? "";
+            $data["indiceRuletaFijado"] = $indice;
+            $data["nombreCategoriaFijada"] = $categorias[$indice]['nombre'] ?? "";
         }
 
         $this->renderer->render("mostrarRuletaView", $data);
