@@ -15,10 +15,14 @@
                         Categoría: {{nombre_categoria}}
                     </div>
 
-                    <div class="mb-3">
-    <span class="badge bg-secondary text-capitalize px-3 py-1" style="font-size: 0.8rem;">
-        Dificultad: {{dificultad}}
-    </span>
+                    <div class="mb-3 d-flex justify-content-center gap-2">
+                        <span class="badge bg-secondary text-capitalize px-3 py-1" style="font-size: 0.8rem;">
+                            Dificultad: {{dificultad}}
+                        </span>
+                        <!-- NUEVA ETIQUETA PARA EL PUNTAJE ACUMULADO -->
+                        <span class="badge bg-success px-3 py-1" style="font-size: 0.8rem;">
+                            Racha: {{puntaje_actual}} pts
+                        </span>
                     </div>
 
                     <!-- ⏱️ CRONÓMETRO -->

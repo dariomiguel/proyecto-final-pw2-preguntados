@@ -10,12 +10,21 @@ class PartidaModel
         $this->database = $database;
     }
 
-    public function obtenerPreguntaAleatoria($usuarioId, $categoriaId)
+    public function obtenerPreguntaAleatoria($usuarioId, $categoriaId, $nivelUsuario)
     {
 
-        $pregunta = $this->obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId);
+        $pregunta = $this->obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId, $nivelUsuario);
 
         if ($pregunta == null) {
+
+            $nivelDificultad = "1=1";
+            if($nivelUsuario === "fácil"){
+                $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 > 70";
+            }elseif ($nivelUsuario === "difícil"){
+                $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 < 30";
+            }else{
+                $nivelDificultad = "((p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 BETWEEN 30 AND 70) OR p.total_respuestas = 0";
+            }
 
             $sql = "
             SELECT
@@ -31,12 +40,21 @@ class PartidaModel
                 ON p.categoria_id = c.id
             WHERE p.estado = 'aprobada'
             AND c.id = ?
+            AND ?
             ORDER BY RAND()
             LIMIT 1
         ";
 
-            $pregunta = $this->database->query($sql, [$categoriaId]);
+            $pregunta = $this->database->query($sql, [$categoriaId, $nivelDificultad]);
 
+            if (empty($pregunta)) {
+                $sqlFallback = "SELECT p.id, p.enunciado, c.nombre AS nombre_categoria, c.color AS color_categoria, p.total_respuestas, p.total_aciertos, c.color_secundario AS color_categoria_sec 
+                                FROM preguntas p 
+                                INNER JOIN categorias c ON p.categoria_id = c.id 
+                                WHERE p.estado = 'aprobada' AND c.id = $categoriaId 
+                                ORDER BY RAND() LIMIT 1";
+                $pregunta = $this->database->query($sqlFallback);
+            }
             if (empty($pregunta)) {
                 return null;
             }
@@ -136,23 +154,35 @@ class PartidaModel
         return $this->database->query($sql, ['aprobada', $usuarioId]);
     }
 
-    public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId)
+    public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId,$nivelUsuario)
     {
+
+        $nivelDificultad = "1=1";
+        if($nivelUsuario === "fácil"){
+            $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 > 70";
+        }elseif ($nivelUsuario === "díficil"){
+            $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 < 30";
+        }else{
+            $nivelDificultad = "((p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 BETWEEN 30 AND 70) OR p.total_respuestas = 0";
+        }
 
         $sql = "
         SELECT
             p.id,
             p.enunciado,
-            p.total_respuestas, 
-            p.total_aciertos,
             c.nombre AS nombre_categoria,
             c.color AS color_categoria,
+            p.total_respuestas,
+            p.total_aciertos,
             c.color_secundario AS color_categoria_sec
         FROM preguntas p
-        INNER JOIN categorias c
-            ON p.categoria_id = c.id
+        INNER JOIN categorias c ON p.categoria_id = c.id
+        LEFT JOIN usuarios_preguntas_vistas upv 
+            ON p.id = upv.pregunta_id AND upv.usuario_id = $usuarioId
         WHERE p.estado = 'aprobada'
         AND c.id = ?
+        AND upv.pregunta_id IS NULL
+        AND ?
         AND p.id NOT IN (
             SELECT pregunta_id
             FROM usuarios_preguntas_vistas
@@ -162,7 +192,7 @@ class PartidaModel
         LIMIT 1
     ";
 
-        $pregunta = $this->database->query($sql,[$categoriaId, $usuarioId]);
+        $pregunta = $this->database->query($sql,[$categoriaId,$nivelDificultad, $usuarioId]);
         if (empty($pregunta)) {
             return null;
         }
@@ -261,5 +291,16 @@ class PartidaModel
         ";
 
         return $this->database->query($sql, [$preguntaId]);
+    }
+
+    public function guardarHistorialPartida($idUsuario, $preguntasRespondidas, $aciertos, $puntaje){
+        $sqlInsertarPartida = "INSERT INTO partidas (usuario_id, preguntas_respondidas, aciertos, puntaje)
+                VALUES(?,?,?,?)";
+        $this->database->execute($sqlInsertarPartida,[$idUsuario, $preguntasRespondidas, $aciertos, $puntaje]);
+
+        $sqlActualizarPuntajeUsuario = "UPDATE usuarios
+                                        SET puntaje_total = puntaje_total + ?
+                                        WHERE id = ?";
+        $this->database->execute($sqlActualizarPuntajeUsuario,[$puntaje,$idUsuario]);
     }
 }

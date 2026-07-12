@@ -62,7 +62,7 @@ class Configurator{
     }
 
     public function getPartidaController(){
-        return new PartidaController($this->getPartidaModel(),$this->getPreguntaModel(), $this->getRenderer(), new Request());
+        return new PartidaController($this->getPartidaModel(),$this->getPreguntaModel(), $this->getUsuarioModel() ,$this->getRenderer(), new Request());
     }
 
     private function getPartidaModel(){
