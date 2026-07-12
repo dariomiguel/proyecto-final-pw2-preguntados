@@ -26,6 +26,7 @@ class PartidaModel
                 $nivelDificultad = "((p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 BETWEEN 30 AND 70) OR p.total_respuestas = 0";
             }
 
+            // Mantenemos la estructura limpia e inyectamos de forma segura la dificultad dinámica
             $sql = "
             SELECT
                 p.id,
@@ -39,12 +40,8 @@ class PartidaModel
             INNER JOIN categorias c
                 ON p.categoria_id = c.id
             WHERE p.estado = 'aprobada'
-<<<<<<< HEAD
-            AND c.id = $categoriaId
-            AND ($nivelDificultad)
-=======
             AND c.id = ?
->>>>>>> a0e56f14f934c3dacc75ce16db8a50f4cf2f9d7b
+            AND ($nivelDificultad)
             ORDER BY RAND()
             LIMIT 1
         ";
@@ -55,9 +52,9 @@ class PartidaModel
                 $sqlFallback = "SELECT p.id, p.enunciado, c.nombre AS nombre_categoria, c.color AS color_categoria, p.total_respuestas, p.total_aciertos, c.color_secundario AS color_categoria_sec 
                                 FROM preguntas p 
                                 INNER JOIN categorias c ON p.categoria_id = c.id 
-                                WHERE p.estado = 'aprobada' AND c.id = $categoriaId 
+                                WHERE p.estado = 'aprobada' AND c.id = ? 
                                 ORDER BY RAND() LIMIT 1";
-                $pregunta = $this->database->query($sqlFallback);
+                $pregunta = $this->database->query($sqlFallback, [$categoriaId]);
             }
             if (empty($pregunta)) {
                 return null;
@@ -158,18 +155,19 @@ class PartidaModel
         return $this->database->query($sql, ['aprobada', $usuarioId]);
     }
 
-    public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId,$nivelUsuario)
+    public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId, $nivelUsuario)
     {
 
         $nivelDificultad = "1=1";
         if($nivelUsuario === "fácil"){
             $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 > 70";
-        }elseif ($nivelUsuario === "díficil"){
+        }elseif ($nivelUsuario === "difícil"){ // Tilde corregida
             $nivelDificultad = "(p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 < 30";
         }else{
             $nivelDificultad = "((p.total_aciertos / NULLIF(p.total_respuestas, 0)) * 100 BETWEEN 30 AND 70) OR p.total_respuestas = 0";
         }
 
+        // Combinamos la lógica de LEFT JOIN limpia evitando redundancias
         $sql = "
         SELECT
             p.id,
@@ -182,25 +180,16 @@ class PartidaModel
         FROM preguntas p
         INNER JOIN categorias c ON p.categoria_id = c.id
         LEFT JOIN usuarios_preguntas_vistas upv 
-            ON p.id = upv.pregunta_id AND upv.usuario_id = $usuarioId
+            ON p.id = upv.pregunta_id AND upv.usuario_id = ?
         WHERE p.estado = 'aprobada'
-<<<<<<< HEAD
-        AND c.id = $categoriaId
-        AND upv.pregunta_id IS NULL
-        AND $nivelDificultad      
-=======
         AND c.id = ?
-        AND p.id NOT IN (
-            SELECT pregunta_id
-            FROM usuarios_preguntas_vistas
-            WHERE usuario_id = ?
-        )
->>>>>>> a0e56f14f934c3dacc75ce16db8a50f4cf2f9d7b
+        AND upv.pregunta_id IS NULL
+        AND ($nivelDificultad)      
         ORDER BY RAND()
         LIMIT 1
     ";
 
-        $pregunta = $this->database->query($sql,[$categoriaId, $usuarioId]);
+        $pregunta = $this->database->query($sql, [$usuarioId, $categoriaId]);
         if (empty($pregunta)) {
             return null;
         }

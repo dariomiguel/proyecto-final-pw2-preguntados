@@ -74,12 +74,8 @@ class PartidaController
         }
 
         $id_categoria = (int)$_SESSION["idCategoria"];
-<<<<<<< HEAD
-        $id_usuario = $_SESSION["usuario"]["id"];
-        $nivelUsuario = $this->usuarioModel->getNivelUsuario($id_usuario);
-=======
         $id_usuario = (int)$_SESSION["usuario"]["id"];
->>>>>>> a0e56f14f934c3dacc75ce16db8a50f4cf2f9d7b
+        $nivelUsuario = $this->usuarioModel->getNivelUsuario($id_usuario);
 
         if (isset($_SESSION["pregunta_activa_id"])) {
             $pregunta = $this->model->obtenerPreguntaPorId($_SESSION["pregunta_activa_id"]);
@@ -171,10 +167,7 @@ class PartidaController
             $_SESSION["puntaje_actual"]++;
             $_SESSION["puntaje_final"] = $_SESSION["puntaje_actual"];
 
-            //
-
             header("Location:/partida/verRuleta");
-
 
         } else {
             $idUsuario = $_SESSION["usuario"]["id"];
@@ -184,9 +177,7 @@ class PartidaController
 
             $this->model->guardarHistorialPartida($idUsuario, $preguntasRespondidas, $aciertos, $puntaje);
 
-
             $_SESSION["puntaje_final"] = $aciertos;
-
             unset($_SESSION["puntaje_actual"]);
 
             header("Location:/partida/terminada");
