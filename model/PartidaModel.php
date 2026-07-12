@@ -30,12 +30,12 @@ class PartidaModel
             INNER JOIN categorias c
                 ON p.categoria_id = c.id
             WHERE p.estado = 'aprobada'
-            AND c.id = $categoriaId
+            AND c.id = ?
             ORDER BY RAND()
             LIMIT 1
         ";
 
-            $pregunta = $this->database->query($sql);
+            $pregunta = $this->database->query($sql, [$categoriaId]);
 
             if (empty($pregunta)) {
                 return null;
@@ -50,11 +50,11 @@ class PartidaModel
             texto,
             es_correcta
         FROM respuestas
-        WHERE pregunta_id = {$pregunta['id']}
+        WHERE pregunta_id = ?
         ORDER BY RAND()
     ";
 
-        $pregunta['respuestas'] = $this->database->query($sqlRespuestas);
+        $pregunta['respuestas'] = $this->database->query($sqlRespuestas, [$pregunta['id']]);
 
         return $pregunta;
     }
@@ -65,10 +65,10 @@ class PartidaModel
         SELECT
             es_correcta
         FROM respuestas
-        WHERE id = $idRespuesta
+        WHERE id = ?
     ";
 
-        $resultado = $this->database->query($sql);
+        $resultado = $this->database->query($sql, [$idRespuesta]);
 
         if (empty($resultado)) {
             return null;
@@ -83,12 +83,12 @@ class PartidaModel
         $sql = "
         SELECT texto
         FROM respuestas
-        WHERE pregunta_id = $idRespuesta
+        WHERE pregunta_id = ?
           AND es_correcta = 1
         LIMIT 1
     ";
 
-        $resultado = $this->database->query($sql);
+        $resultado = $this->database->query($sql, [$idRespuesta]);
 
         if (empty($resultado)) {
             return "";
@@ -104,10 +104,10 @@ class PartidaModel
         INSERT INTO usuarios_preguntas_vistas
             (usuario_id, pregunta_id)
         VALUES
-            ($usuarioId, $preguntaId)
+            (?, ?)
     ";
 
-        $this->database->execute($sql);
+        $this->database->execute($sql, [$usuarioId, $preguntaId]);
     }
 
     public function buscarPreguntasNoVistas($usuarioId)
@@ -125,15 +125,15 @@ class PartidaModel
         FROM preguntas p
         INNER JOIN categorias c
             ON p.categoria_id = c.id
-        WHERE p.estado = 'aprobada'
+        WHERE p.estado = ?
         AND p.id NOT IN (
             SELECT pregunta_id
             FROM usuarios_preguntas_vistas
-            WHERE usuario_id = $usuarioId
+            WHERE usuario_id = ?
         )
     ";
 
-        return $this->database->query($sql);
+        return $this->database->query($sql, ['aprobada', $usuarioId]);
     }
 
     public function obtenerPreguntaNoVistaAleatoria($usuarioId, $categoriaId)
@@ -152,17 +152,17 @@ class PartidaModel
         INNER JOIN categorias c
             ON p.categoria_id = c.id
         WHERE p.estado = 'aprobada'
-        AND c.id = $categoriaId
+        AND c.id = ?
         AND p.id NOT IN (
             SELECT pregunta_id
             FROM usuarios_preguntas_vistas
-            WHERE usuario_id = $usuarioId
+            WHERE usuario_id = ?
         )
         ORDER BY RAND()
         LIMIT 1
     ";
 
-        $pregunta = $this->database->query($sql);
+        $pregunta = $this->database->query($sql,[$categoriaId, $usuarioId]);
         if (empty($pregunta)) {
             return null;
         }
@@ -175,10 +175,10 @@ class PartidaModel
         $sql = "
         SELECT pregunta_id
         FROM usuarios_preguntas_vistas
-        WHERE usuario_id = $usuarioId
+        WHERE usuario_id = ?
     ";
 
-        return $this->database->query($sql);
+        return $this->database->query($sql, [$usuarioId]);
     }
 
     public function cantidadPreguntasYaEchasAlUsuario($usuarioId)
@@ -186,10 +186,10 @@ class PartidaModel
         $sql = "
         SELECT COUNT(*) AS vistas
         FROM usuarios_preguntas_vistas
-        WHERE usuario_id = $usuarioId;
+        WHERE usuario_id = ?;
         ";
 
-        return $this->database->query($sql);
+        return $this->database->query($sql, [$usuarioId]);
     }
 
     public function cantidadPreguntasEnBD($usuarioId)
@@ -208,12 +208,12 @@ class PartidaModel
         $sql = "
         SELECT id
         FROM respuestas
-        WHERE pregunta_id = $idPregunta
+        WHERE pregunta_id = ?
           AND es_correcta = 1
         LIMIT 1
     ";
 
-        $resultado = $this->database->query($sql);
+        $resultado = $this->database->query($sql, [$idPregunta]);
 
         return $resultado[0];
     }
@@ -221,9 +221,9 @@ class PartidaModel
     public function esPreguntaVistaPorUsuario($id_usuario, $id_pregunta) {
         $sql = "SELECT COUNT(*) as total 
             FROM usuarios_preguntas_vistas 
-            WHERE usuario_id = $id_usuario AND pregunta_id = $id_pregunta";
+            WHERE usuario_id = ? AND pregunta_id = ? ";
 
-        $resultado = $this->database->query($sql);
+        $resultado = $this->database->query($sql, [$id_usuario, $id_pregunta]);
 
         return $resultado[0]['total'] > 0;
     }
@@ -242,12 +242,12 @@ class PartidaModel
                 c.color_secundario AS color_categoria_sec
             FROM preguntas p
             INNER JOIN categorias c ON p.categoria_id = c.id
-            WHERE p.id = $preguntaId
+            WHERE p.id = ?
             AND p.estado = 'aprobada'
             LIMIT 1
         ";
 
-        $resultado = $this->database->query($sql);
+        $resultado = $this->database->query($sql, [$preguntaId]);
         return $resultado ? $resultado[0] : null;
     }
 
@@ -256,10 +256,10 @@ class PartidaModel
         $sql = "
             SELECT id, texto, es_correcta
             FROM respuestas
-            WHERE pregunta_id = $preguntaId
+            WHERE pregunta_id = ?
             ORDER BY RAND()
         ";
 
-        return $this->database->query($sql);
+        return $this->database->query($sql, [$preguntaId]);
     }
 }
