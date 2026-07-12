@@ -7,18 +7,6 @@ class Configurator{
         $this->config = parse_ini_file("config/config.ini");
     }
 
-    public function getLobbyController(){
-        return new LobbyController($this->getUsuarioModel(), $this->getRenderer());
-    }
-
-    public function getPerfilController(){
-        return new PerfilController($this->getUsuarioModel(),$this->getRenderer(),new Request());
-    }
-
-    public function getLoginController(){
-        return new LoginController($this->getLoginModel(), $this->getRenderer(), new Request());
-    }
-
     private function getDatabase(){
         return new MyDatabase(
             $this->config['hostname'],
@@ -26,26 +14,6 @@ class Configurator{
             $this->config['password'],
             $this->config['database']
         );
-    }
-
-    private function getRenderer(){
-        return new MustacheRenderer(__DIR__ . '/../view');
-    }
-
-    private function getLoginModel(){
-        return new LoginModel($this->getDatabase());
-    }
-
-    private function getRegistroModel(){
-        return new RegistroModel($this->getDatabase());
-    }
-
-    private function getUsuarioModel(){
-        return new UsuarioModel($this->getDatabase());
-    }
-
-    public function getRegistroController(){
-        return new RegistroController($this->getRegistroModel(), $this->getRenderer(), new Request());
     }
 
     public function getRouter(){
@@ -61,9 +29,53 @@ class Configurator{
         return $this->{$defaultGetter}();
     }
 
+    public function getLobbyController(){
+        return new LobbyController($this->getUsuarioModel(), $this->getRenderer());
+    }
+
+    public function getPerfilController(){
+        return new PerfilController($this->getUsuarioModel(),$this->getRenderer(),new Request());
+    }
+
+    public function getLoginController(){
+        return new LoginController($this->getLoginModel(), $this->getRenderer(), new Request());
+    }
+
+    public function getRegistroController(){
+        return new RegistroController($this->getRegistroModel(), $this->getRenderer(), new Request());
+    }
+
     public function getPartidaController(){
         return new PartidaController($this->getPartidaModel(),$this->getPreguntaModel(), $this->getUsuarioModel() ,$this->getRenderer(), new Request());
     }
+
+    private function getUsuarioModel(){
+        return new UsuarioModel($this->getDatabase());
+    }
+
+    private function getLoginModel(){
+        return new LoginModel($this->getDatabase());
+    }
+
+    private function getRegistroModel(){
+        return new RegistroModel($this->getDatabase());
+    }
+
+    private function getRenderer(){
+        return new MustacheRenderer(__DIR__ . '/../view');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     private function getPartidaModel(){
         return new PartidaModel($this->getDatabase());

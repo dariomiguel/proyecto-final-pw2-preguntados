@@ -9,13 +9,6 @@ class PartidaController
     private $renderer;
     private $request;
     private const TIEMPO_LIMITE = 15;
-    /*
-     * NOTA: se eliminó la constante CATEGORIAS hardcodeada.
-     * Ahora las categorías salen de la tabla `categorias` mediante
-     * $this->preguntaModel->obtenerCategorias() (ver INSTRUCCIONES.md),
-     * así agregar una categoría en la BD alcanza para que aparezca
-     * en la ruleta sin tocar código.
-     */
 
     public function __construct($model,$preguntaModel,$usuarioModel, $renderer, $request)
     {
@@ -26,12 +19,6 @@ class PartidaController
         $this->request = $request;
     }
 
-    /*
-     * Devuelve la posición (0..n-1) que ocupa la categoría $idCategoria
-     * dentro de la lista ordenada. Ese índice es el sector de la ruleta.
-     * Antes se usaba "id - 1", que se rompe si algún id no es consecutivo
-     * (por ejemplo, si se borra una categoría del medio).
-     */
     private function indiceDeCategoria($categorias, $idCategoria)
     {
         foreach ($categorias as $indice => $categoria) {
@@ -87,8 +74,12 @@ class PartidaController
         }
 
         $id_categoria = (int)$_SESSION["idCategoria"];
+<<<<<<< HEAD
         $id_usuario = $_SESSION["usuario"]["id"];
         $nivelUsuario = $this->usuarioModel->getNivelUsuario($id_usuario);
+=======
+        $id_usuario = (int)$_SESSION["usuario"]["id"];
+>>>>>>> a0e56f14f934c3dacc75ce16db8a50f4cf2f9d7b
 
         if (isset($_SESSION["pregunta_activa_id"])) {
             $pregunta = $this->model->obtenerPreguntaPorId($_SESSION["pregunta_activa_id"]);
@@ -101,11 +92,12 @@ class PartidaController
             }
 
             $yaVioEstaPregunta = $this->model->esPreguntaVistaPorUsuario($id_usuario, $pregunta["id"]);
+            $idPregunta = (int)$pregunta["id"];
             if (!$yaVioEstaPregunta) {
-                $this->model->guardarPreguntaVista($id_usuario, $pregunta["id"]);
+                $this->model->guardarPreguntaVista($id_usuario, $idPregunta);
             }
 
-            $_SESSION["pregunta_activa_id"] = $pregunta["id"];
+            $_SESSION["pregunta_activa_id"] =(int)$pregunta["id"];
         }
 
         $pregunta["respuestas"] = $this->model->obtenerRespuestasDePregunta($pregunta["id"]);
@@ -144,8 +136,8 @@ class PartidaController
     public function validarRespuesta()
     {
 
-        $idPregunta = $_POST["id_pregunta"];
-        $idRespuesta = $_POST["respuesta_id"] ?? null;
+        $idPregunta = (int)$_POST["id_pregunta"];
+        $idRespuesta = isset($_POST["respuesta_id"]) ? (int) $_POST["respuesta_id"] : null;
 
         if (!isset($_SESSION["timer_inicio"])) {
             header("Location:/partida/verRuleta");
@@ -228,7 +220,7 @@ class PartidaController
 
         if (isset($_SESSION["idCategoria"])) {
             $idCategoria = (int)$_SESSION["idCategoria"];
-            $indice = $this->indiceDeCategoria($categorias, $idCategoria);
+            $indice = (int)$this->indiceDeCategoria($categorias, $idCategoria);
 
             $data["categoriaFijada"] = true;
             $data["idCategoriaFijada"] = $idCategoria;
