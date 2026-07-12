@@ -5,6 +5,7 @@ class PartidaController
 
     private $model;
     private $preguntaModel;
+    private $usuarioModel;
     private $renderer;
     private $request;
     private const TIEMPO_LIMITE = 15;
@@ -18,10 +19,11 @@ class PartidaController
         7 => "Programación",
     ];
 
-    public function __construct($model,$preguntaModel, $renderer, $request)
+    public function __construct($model,$preguntaModel,$usuarioModel, $renderer, $request)
     {
         $this->model = $model;
         $this->preguntaModel = $preguntaModel;
+        $this->usuarioModel = $usuarioModel;
         $this->renderer = $renderer;
         $this->request = $request;
     }
@@ -68,11 +70,12 @@ class PartidaController
 
         $id_categoria = (int)$_SESSION["idCategoria"];
         $id_usuario = $_SESSION["usuario"]["id"];
+        $nivelUsuario = $this->usuarioModel->getNivelUsuario($id_usuario);
 
         if (isset($_SESSION["pregunta_activa_id"])) {
             $pregunta = $this->model->obtenerPreguntaPorId($_SESSION["pregunta_activa_id"]);
         } else {
-            $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario, $id_categoria);
+            $pregunta = $this->model->obtenerPreguntaAleatoria($id_usuario, $id_categoria, $nivelUsuario);
 
         $pregunta['sesionIniciada'] = isset($_SESSION["usuario"]);
         $pregunta['esAdmin'] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
@@ -126,6 +129,8 @@ class PartidaController
 
         $pregunta = $this->preguntaModel->calcularDificultad($pregunta);
 
+        $pregunta["puntaje_actual"] = $_SESSION["puntaje_actual"] ?? 0;
+
         return $this->renderer->render("partidaView", $pregunta);
     }
 
@@ -167,11 +172,21 @@ class PartidaController
             $_SESSION["puntaje_actual"]++;
             $_SESSION["puntaje_final"] = $_SESSION["puntaje_actual"];
 
+            //
+
             header("Location:/partida/verRuleta");
 
 
         } else {
-            $_SESSION["puntaje_final"] = $_SESSION["puntaje_actual"] ?? 0;
+            $idUsuario = $_SESSION["usuario"]["id"];
+            $aciertos = $_SESSION["puntaje_actual"] ?? 0;
+            $preguntasRespondidas = $aciertos + 1;
+            $puntaje = $aciertos;
+
+            $this->model->guardarHistorialPartida($idUsuario, $preguntasRespondidas, $aciertos, $puntaje);
+
+
+            $_SESSION["puntaje_final"] = $aciertos;
 
             unset($_SESSION["puntaje_actual"]);
 

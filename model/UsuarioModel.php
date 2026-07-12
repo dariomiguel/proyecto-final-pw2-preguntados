@@ -64,4 +64,30 @@ class UsuarioModel
         $resultado = $this->database->query($sql, array($idUsuario));
         return !empty($resultado) ? $resultado[0] : null;
     }
+
+    public function getNivelUsuario($idUsuario){
+
+        $sql = "SELECT SUM(preguntas_respondidas)  as total_respondidas,
+                       SUM(aciertos) as total_aciertos
+                FROM partidas
+                WHERE usuario_id = ?";
+
+        $resultado = $this->database->query($sql, [$idUsuario]);
+
+        $respondidas = $resultado[0]["total_respondidas"] ?? 0;
+        $aciertos = $resultado[0]["total_aciertos"] ?? 0;
+
+        $nivelUsuario = "medio";
+
+        if($respondidas > 0){
+            $porcetajeAciertos = ($aciertos / $respondidas) * 100;
+
+            if($porcetajeAciertos > 70){
+                $nivelUsuario = "difícil";
+            }elseif ($porcetajeAciertos < 30) {
+                $nivelUsuario = "fácil";
+            }
+        }
+        return $nivelUsuario;
+    }
 }
