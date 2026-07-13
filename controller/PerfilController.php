@@ -37,7 +37,8 @@ class PerfilController
             $datoUsuario['foto_perfil'] = 'default-user.webp';
         }
 
-        $urlPerfil = "http://localhost/perfil/verPublico?nombre=" . $datoUsuario['nombre_usuario'];
+        //Elige directamente la página de infinity free en vez de localhost como estaba
+        $urlPerfil = "https://proyecto-final-grupo-diez.infinityfree.io/perfil/verPublico?nombre=" . $datoUsuario['nombre_usuario'];
         $datoUsuario['url_qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($urlPerfil);
 
         return $this->renderer->render("perfilView", array_merge($datoUsuario, [
