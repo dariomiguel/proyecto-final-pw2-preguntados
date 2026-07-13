@@ -7,6 +7,8 @@ class Auth
 
         'admin' => [
             'ver' => ['Administrador'],
+            'usuarios' => ['Administrador'],
+            'cambiarRol' => ['Administrador'],
         ],
 
         'pregunta' => [
@@ -43,27 +45,30 @@ class Auth
         $methodName     = strtolower($method);
         //no hay sesion -> al login
 
+        // Rutas públicas: no requieren sesión.
         if (in_array($controllerName, ['login', 'lobby', 'registro'])) {
             return;
         }
-        if(!isset($_SESSION['usuario'])){
+        // Sin sesión -> al login.
+        if (!isset($_SESSION['usuario'])) {
             Redirect::to('/login/ver');
             exit();
         }
-        if (!isset(self::$reglas[$controllerName][$method])) {
+
+        // Sin regla definida para esta ruta -> se permite.
+        if (!isset(self::$reglas[$controllerName][$methodName])) {
             return;
         }
 
-
         $rolesPermitidos = self::$reglas[$controllerName][$methodName];
-        $rolUsuario = $_SESSION['usuario']['rol'];
+        $rolUsuario      = $_SESSION['usuario']['rol'];
 
-
-        //no esta en el array de roles permitidos -> lobby
+        // Rol no permitido -> al lobby.
         if (!in_array($rolUsuario, $rolesPermitidos)) {
             Redirect::to('/lobby/ver');
             exit();
         }
     }
+
 
 }

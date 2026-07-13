@@ -41,6 +41,11 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/admin/usuarios" >
+                                    <i class="bi bi-people-fill"></i> Gestionar usuarios
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/pregunta/pendientes">Panel de preguntas</a>
                             </li>
                             <li class="nav-item">
@@ -50,10 +55,20 @@
                                 <a class="nav-link" href="/categoria/listar">Categorías</a>
                             </li>
                         {{/esAdmin}}
-                        {{^esAdmin}}
+                        {{#esEditor}}
                             <li class="nav-item">
-                                <a class="nav-link" href="/pregunta/ver">Sugerir Pregunta</a>
+                                <a class="nav-link" href="/pregunta/pendientes">Panel de preguntas</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/pregunta/ver">Crear Pregunta</a>
+                            </li>
+                        {{/esEditor}}
+                        {{^esAdmin}}
+                            {{^esEditor}}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/pregunta/ver">Sugerir Pregunta</a>
+                                </li>
+                            {{/esEditor}}
                         {{/esAdmin}}
                         <li class="nav-item d-none d-lg-block">
                             <span class="nav-link text-secondary">|</span>

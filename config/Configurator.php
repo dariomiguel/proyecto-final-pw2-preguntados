@@ -91,7 +91,7 @@ class Configurator{
     }
 
     public function getAdminController(){
-        return new AdminController($this->getEstadisticaModel(), $this->getRenderer(), new Request());
+        return new AdminController($this->getEstadisticaModel(), $this->getRenderer(), new Request(), $this->getUsuarioModel());
     }
 
     public function getEstadisticaModel()

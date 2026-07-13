@@ -1,0 +1,63 @@
+{{>header}}
+
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 fw-bold mb-0">Gestión de usuarios</h1>
+    </div>
+
+    {{#exito}}
+        <div class="alert alert-success py-2" role="alert">
+            <i class="bi bi-check-circle-fill"></i> Rol actualizado con éxito.
+        </div>
+    {{/exito}}
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Mail</th>
+                        <th>Rol actual</th>
+                        <th style="width: 320px;">Cambiar rol</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#usuarios}}
+                        <tr>
+                            <td>{{nombre_usuario}}</td>
+                            <td>{{mail}}</td>
+                            <td>
+                                {{#esAdministrador}}<span class="badge bg-danger">Administrador</span>{{/esAdministrador}}
+                                {{#esEditor}}<span class="badge bg-warning text-dark">Editor</span>{{/esEditor}}
+                                {{#esJugador}}<span class="badge bg-secondary">Jugador</span>{{/esJugador}}
+                            </td>
+                            <td>
+                                {{#esUsuarioActual}}
+                                    <span class="text-muted small">Es tu cuenta</span>
+                                {{/esUsuarioActual}}
+                                {{^esUsuarioActual}}
+                                    <form action="/admin/cambiarRol" method="POST" class="d-flex gap-2">
+                                        <input type="hidden" name="id" value="{{id}}">
+                                        <select name="rol" class="form-select form-select-sm">
+                                            <option value="Jugador" {{#esJugador}}selected{{/esJugador}}>Jugador</option>
+                                            <option value="Editor" {{#esEditor}}selected{{/esEditor}}>Editor</option>
+                                            <option value="Administrador" {{#esAdministrador}}selected{{/esAdministrador}}>Administrador</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+                                    </form>
+                                {{/esUsuarioActual}}
+                            </td>
+                        </tr>
+                    {{/usuarios}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{>footer}}

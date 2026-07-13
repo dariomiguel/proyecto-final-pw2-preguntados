@@ -6,11 +6,14 @@ class AdminController
     private $renderer;
     private $request;
 
-    public function __construct($model, $renderer, $request)
+    private $usuarioModel;
+
+    public function __construct($model, $renderer, $request, $usuarioModel)
     {
         $this->model = $model;
         $this->renderer = $renderer;
         $this->request = $request;
+        $this->usuarioModel = $usuarioModel;
     }
 
     public function ver()
@@ -75,5 +78,42 @@ class AdminController
             ];
         }
         return $resultado;
+    }
+
+    public function usuarios()
+    {
+        $usuarios = $this->usuarioModel->getAllUsuarios();
+        $idActual = $_SESSION['usuario']['id'];
+
+        foreach ($usuarios as &$u) {
+            $u['esJugador'] = $u['rol'] === 'Jugador';
+            $u['esEditor'] = $u['rol'] === 'Editor';
+            $u['esAdministrador'] = $u['rol'] === 'Administrador';
+            $u['esUsuarioActual'] = $u['id'] == $idActual;
+        }
+        unset($u);
+
+        $this->renderer->render('adminUsuariosView', [
+            'usuarios'       => $usuarios,
+            'exito'          => $this->request->get('exito') === '1',
+            'sesionIniciada' => true,
+            'esAdmin'        => true,
+            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'] ?? '',
+        ]);
+    }
+
+    public function cambiarRol()
+    {
+        $idUsuario = $this->request->post('id');
+        $rol       = $this->request->post('rol');
+
+        // Un admin no puede cambiarse el rol a sí mismo
+        if ($idUsuario == $_SESSION['usuario']['id']) {
+            Redirect::to('/admin/usuarios');
+            return;
+        }
+
+        $this->usuarioModel->cambiarRol($idUsuario, $rol);
+        Redirect::to('/admin/usuarios?exito=1');
     }
 }

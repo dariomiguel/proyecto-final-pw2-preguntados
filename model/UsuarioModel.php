@@ -90,4 +90,23 @@ class UsuarioModel
         }
         return $nivelUsuario;
     }
+
+    public function getAllUsuarios()
+    {
+        $sql = "SELECT id, nombre_usuario, mail, rol
+            FROM usuarios
+            ORDER BY nombre_usuario";
+        return $this->database->query($sql);
+    }
+
+    public function cambiarRol($idUsuario, $rol)
+    {
+        $rolesValidos = ['Jugador', 'Editor', 'Administrador'];
+        if (!in_array($rol, $rolesValidos)) {
+            return false;
+        }
+
+        $sql = "UPDATE usuarios SET rol = ? WHERE id = ?";
+        return $this->database->execute($sql, [$rol, $idUsuario]);
+    }
 }
