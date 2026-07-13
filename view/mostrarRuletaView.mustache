@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ruleta - Preguntados.UNLaM</title>
-    <link rel="stylesheet" href="../public/css/ruleta-style.css">
-</head>
-<body class="d-flex flex-column min-vh-100">
+{{>header}}
+
+<link rel="stylesheet" href="/public/css/ruleta-style.css">
+
 <main class="app">
     <div class="title">
         <h1>A jugar!!</h1>
@@ -21,7 +16,7 @@
         </button>
     </section>
 </main>
-<div id="modal" class="modal" role="dialog" aria-modal="true"
+<div id="modal" class="ruleta-modal" role="dialog" aria-modal="true"
      aria-labelledby="modalTitle" aria-describedby="modalDesc">
     <div class="modal-card">
         <h2 id="modalTitle">Resultado</h2>
@@ -32,22 +27,17 @@
 </div>
 
 <script>
-    /*
-     * Estado inicial que el SERVIDOR le pasa al cliente.
-     * "categorias" viene de la tabla `categorias` de la BD
-     * (triple llave {{{ }}} para que Mustache no escape el JSON).
-     */
     window.RULETA_STATE = {
-        categorias:      {{{categorias_json}}},
+        categorias: {{{categorias_json}}},
         categoriaFijada: {{#categoriaFijada}}true{{/categoriaFijada}}{{^categoriaFijada}}false{{/categoriaFijada}},
         indiceRuleta:    {{#categoriaFijada}}{{indiceRuletaFijado}}{{/categoriaFijada}}{{^categoriaFijada}}null{{/categoriaFijada}},
         nombreCategoria: "{{#categoriaFijada}}{{nombreCategoriaFijada}}{{/categoriaFijada}}"
     };
 </script>
 
-<script src="../public/js/ruletaDatos.js"></script>
-<script src="../public/js/ruletaDibujo.js"></script>
-<script src="../public/js/ruletaAnimacion.js"></script>
-<script src="../public/js/mostrarRuleta.js"></script>
-</body>
-</html>
+<script src="/public/js/ruletaDatos.js"></script>
+<script src="/public/js/ruletaDibujo.js"></script>
+<script src="/public/js/ruletaAnimacion.js"></script>
+<script src="/public/js/mostrarRuleta.js"></script>
+
+{{>footer}}

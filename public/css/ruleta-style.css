@@ -12,12 +12,18 @@
     --btn:#ffffff;
     --border:#e7ecf6;
     --overlay: rgba(22, 32, 54, .45);
+
+    /* Reserva vertical para todo lo que NO es la rueda:
+       navbar (~56px) + título (~90px) + gaps y paddings (~60px). */
+    --alto-reservado: 210px;
 }
 
 *{ box-sizing:border-box; }
-html,body{
+
+html, body{
     margin:0;
-    min-height:100%;
+    height:100dvh;
+    overflow:hidden;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     color:var(--text);
     background:
@@ -26,39 +32,40 @@ html,body{
             linear-gradient(180deg, var(--bg1), var(--bg2));
 }
 
-body{
-    display:grid;
-    place-items:center;
-    padding:24px;
-}
-
+/* El body ya viene con d-flex flex-column desde el header.
+   main.app toma todo el alto restante debajo del navbar. */
 .app{
-    width:min(100%, 760px);
-    display:grid;
-    gap:18px;
-    justify-items:center;
+    flex:1 1 auto;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding:12px 16px;
 }
 
 .title{
     text-align:center;
-    padding:8px 16px 0;
+    flex:0 0 auto;
 }
 
 .title h1{
     margin:0;
-    font-size:clamp(1.6rem, 3vw, 2.4rem);
+    font-size:clamp(1.35rem, 2.6vw, 2rem);
     letter-spacing:-0.03em;
 }
 
 .title p{
-    margin:6px 0 0;
+    margin:4px 0 0;
     color:var(--muted);
-    font-size:.98rem;
+    font-size:.95rem;
 }
 
 .wheel-shell{
     position:relative;
-    width:min(92vw, 560px);
+    flex:0 1 auto;
+    width:min(90vw, 520px, calc(100dvh - var(--alto-reservado)));
     aspect-ratio:1/1;
     display:grid;
     place-items:center;
@@ -104,8 +111,9 @@ canvas{
 
 .spin-btn{
     position:absolute;
-    width:124px;
-    height:124px;
+    width:clamp(88px, 22%, 124px);
+    aspect-ratio:1/1;
+    height:auto;
     border:none;
     border-radius:50%;
     cursor:pointer;
@@ -130,6 +138,7 @@ canvas{
 .spin-btn .small{
     display:block;
     font-size:.78rem;
+    line-height:1.2;
     color:#6c7a96;
     font-weight:700;
     margin-top:2px;
@@ -153,7 +162,12 @@ canvas{
     box-shadow: var(--shadow-soft);
 }
 
-.modal{
+/* ============================================================
+ * MODAL DE RESULTADO
+ * Renombrado de .modal → .ruleta-modal: Bootstrap (cargado por
+ * el header) trae .modal{display:none} y lo dejaba invisible.
+ * ============================================================ */
+.ruleta-modal{
     position:fixed;
     inset:0;
     background:var(--overlay);
@@ -164,10 +178,10 @@ canvas{
     visibility:hidden;
     pointer-events:none;
     transition: opacity .22s ease, visibility .22s ease;
-    z-index:10;
+    z-index:2000; /* por encima del navbar de Bootstrap (~1030) */
 }
 
-.modal.open{
+.ruleta-modal.open{
     opacity:1;
     visibility:visible;
     pointer-events:auto;
@@ -185,7 +199,7 @@ canvas{
     transition: transform .22s ease;
 }
 
-.modal.open .modal-card{
+.ruleta-modal.open .modal-card{
     transform: translateY(0) scale(1);
 }
 
@@ -193,6 +207,7 @@ canvas{
     margin:0 0 8px;
     font-size:1.45rem;
     letter-spacing:-0.02em;
+    color:var(--text);
 }
 
 .modal-card p{
@@ -228,19 +243,23 @@ canvas{
     color:#fff;
     font-weight:800;
     font-size:1rem;
+    text-decoration:none;
     box-shadow: 0 14px 26px rgba(93, 119, 234, .28);
     transition: transform .18s ease, filter .18s ease;
 }
 
-.close-btn:hover{ filter: brightness(1.03); transform: translateY(-1px); }
+.close-btn:hover{ filter: brightness(1.03); transform: translateY(-1px); color:#fff; }
 .close-btn:active{ transform: translateY(0); }
 
+/* Pantallas bajas (notebooks chicas, celular apaisado):
+   se oculta el subtítulo y se libera espacio para la rueda. */
+@media (max-height: 620px){
+    .title p{ display:none; }
+    .title h1{ font-size:1.25rem; }
+    :root{ --alto-reservado: 160px; }
+}
+
 @media (max-width: 520px){
-    .spin-btn{
-        width:104px;
-        height:104px;
-        font-size:.98rem;
-    }
     .pointer{
         top:8px;
         border-left-width:15px;
