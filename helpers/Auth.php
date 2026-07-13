@@ -5,6 +5,10 @@ class Auth
 
     private static $reglas = [
 
+        'admin' => [
+            'ver' => ['Administrador'],
+        ],
+
         'pregunta' => [
             'ver'        => ['Jugador', 'Editor', 'Administrador'],
             'guardar'    => ['Jugador', 'Editor', 'Administrador'],
@@ -13,14 +17,16 @@ class Auth
             'rechazar'   => ['Editor', 'Administrador'],
             'eliminar'   => ['Editor', 'Administrador'],
             'actualizar' => ['Editor', 'Administrador'],
+            'editar'     => ['Editor', 'Administrador'],
+            'quitarreporte' => ['Editor', 'Administrador'],
             'reportar'   => ['Jugador','Editor', 'Administrador'],
 
         ],
         'perfil' => [
             'ver'               => ['Editor', 'Administrador', 'Jugador'],
-            'editarPerfil'      => ['Editor', 'Administrador', 'Jugador'],
-            'actualizarPerfil'  => ['Editor', 'Administrador', 'Jugador'],
-            'verPublico'        => ['Editor', 'Administrador', 'Jugador'],
+            'editarperfil'      => ['Editor', 'Administrador', 'Jugador'],
+            'actualizarperfil'  => ['Editor', 'Administrador', 'Jugador'],
+            'verpublico'        => ['Editor', 'Administrador', 'Jugador'],
         ],
         'categoria' => [
             'listar'               => ['Editor', 'Administrador'],
@@ -34,6 +40,7 @@ class Auth
     public static function verificar($controller,$method)
     {
         $controllerName = strtolower($controller);
+        $methodName     = strtolower($method);
         //no hay sesion -> al login
 
         if (in_array($controllerName, ['login', 'lobby', 'registro'])) {
@@ -48,11 +55,12 @@ class Auth
         }
 
 
-        $rolesPemitidos = self::$reglas[$controller][$method];
+        $rolesPermitidos = self::$reglas[$controllerName][$methodName];
         $rolUsuario = $_SESSION['usuario']['rol'];
 
+
         //no esta en el array de roles permitidos -> lobby
-        if (!in_array($rolUsuario, $rolesPemitidos)) {
+        if (!in_array($rolUsuario, $rolesPermitidos)) {
             Redirect::to('/lobby/ver');
             exit();
         }
