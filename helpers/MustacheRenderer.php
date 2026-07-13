@@ -14,6 +14,11 @@ class MustacheRenderer {
     }
 
     public function render($viewName, $data = []) {
+        // Datos globales de sesión, disponibles en todas las vistas.
+        $data['sesionIniciada'] = isset($_SESSION['usuario']);
+        $data['esAdmin'] = in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']);
+        $data['nombre_usuario'] = $data['nombre_usuario'] ?? ($_SESSION['usuario']['nombre_usuario'] ?? '');
+
         $template = $this->mustache->loadTemplate($viewName);
         echo $template->render($data);
     }

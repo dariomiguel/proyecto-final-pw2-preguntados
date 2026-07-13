@@ -41,9 +41,6 @@ class PerfilController
         $datoUsuario['url_qr'] = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" . urlencode($urlPerfil);
 
         return $this->renderer->render("perfilView", array_merge($datoUsuario, [
-            'sesionIniciada' => isset($_SESSION["usuario"]),
-            'esAdmin' => in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']),
-            'nombre_usuario' => $_SESSION["usuario"]["nombre_usuario"] ?? '',
             'usuario_logueado' => $_SESSION["usuario"] ?? null,
         ]));
     }

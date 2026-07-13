@@ -102,9 +102,6 @@ class PartidaController
             $respuesta["pregunta_id"] = $pregunta["id"];
         }
 
-        $pregunta["sesionIniciada"] = isset($_SESSION["usuario"]);
-        $pregunta["esAdmin"] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
-        $pregunta["nombre_usuario"] = $_SESSION["usuario"]["nombre_usuario"] ?? "user_test";
         $pregunta["yaVistaTodas"] = false;
 
         $cantPreguntasEnBD = $this->model->cantidadPreguntasEnBD($id_usuario);
@@ -193,9 +190,6 @@ class PartidaController
     public function terminada(){
         $data['puntaje_final'] = $_SESSION['puntaje_final'] ?? 0;
         $data['texto_correcta'] = $_SESSION['texto_correcta'] ?? "";
-        $data['sesionIniciada'] = isset($_SESSION["usuario"]);
-        $data['esAdmin'] = in_array($_SESSION["usuario"]["rol"] ?? '', ['Administrador', 'Editor']);
-        $data['nombre_usuario'] = $_SESSION["usuario"]["nombre_usuario"] ??  'user_test';
 
         unset($_SESSION["puntaje_final"]);
         unset($_SESSION["texto_correcta"]);

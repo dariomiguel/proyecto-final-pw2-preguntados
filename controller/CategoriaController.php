@@ -23,9 +23,6 @@ class CategoriaController
             'categorias' => $categorias,
             'creada'     => $creada,
             'eliminada'  => $eliminada,
-            'sesionIniciada' => isset($_SESSION['usuario']),
-            'esAdmin' => in_array($_SESSION['usuario']['rol'] ?? '', ['Administrador', 'Editor']),
-            'nombre_usuario' => $_SESSION['usuario']['nombre_usuario'] ?? ''
         ];
         $this->view->render('categoriaView', $datos);
     }
